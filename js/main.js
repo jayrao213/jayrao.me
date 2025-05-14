@@ -1,7 +1,6 @@
 const toggleBtn = document.getElementById("modeToggle");
 const loopImgs = document.querySelectorAll(".loop");
 
-// Initialize based on localStorage
 const isFunMode = localStorage.getItem('funMode') === 'true';
 document.body.classList.toggle("fun-mode", isFunMode);
 toggleBtn.innerHTML = isFunMode ? '<span class="mode-text">😎Pro😎</span>' : '<span class="mode-text">😈Fun😈</span>';
