@@ -3,7 +3,9 @@ const loopImgs = document.querySelectorAll(".loop");
 
 const isFunMode = localStorage.getItem('funMode') === 'true';
 document.body.classList.toggle("fun-mode", isFunMode);
-toggleBtn.innerHTML = isFunMode ? '<span class="mode-text">😎Pro😎</span>' : '<span class="mode-text">😈Fun😈</span>';
+toggleBtn.innerHTML = isFunMode
+  ? '<span class="mode-text">😎Pro😎</span>'
+  : '<span class="mode-text">😈Fun😈</span>';
 
 if (isFunMode) {
   toggleBtn.classList.remove('show');
@@ -19,12 +21,16 @@ loopImgs.forEach(img => {
   const seriousSrc = img.dataset.serious;
 
   if (isFunMode) {
-    img.style.display = "";
-    img.src = funSrc;
+    if (funSrc) {
+      img.style.display = "";
+      img.src = funSrc;
+    } else {
+      img.style.display = "none";
+    }
   } else {
     if (seriousSrc) {
-      img.src = seriousSrc;
       img.style.display = "";
+      img.src = seriousSrc;
     } else {
       img.style.display = "none";
     }
@@ -36,7 +42,6 @@ toggleBtn.addEventListener("click", () => {
 
   if (isFunNow) {
     toggleBtn.classList.remove('show');
-
     setTimeout(() => {
       toggleBtn.classList.add('show');
     }, 4000);
@@ -46,19 +51,25 @@ toggleBtn.addEventListener("click", () => {
 
   document.body.classList.toggle("fun-mode", isFunNow);
   localStorage.setItem("funMode", isFunNow);
-  toggleBtn.innerHTML = isFunNow ? '<span class="mode-text">😎Pro😎</span>' : '<span class="mode-text">😈Fun😈</span>';
+  toggleBtn.innerHTML = isFunNow
+    ? '<span class="mode-text">😎Pro😎</span>'
+    : '<span class="mode-text">😈Fun😈</span>';
 
   loopImgs.forEach(img => {
     const funSrc = img.dataset.fun;
     const seriousSrc = img.dataset.serious;
 
     if (isFunNow) {
-      img.style.display = "";
-      img.src = funSrc;
+      if (funSrc) {
+        img.style.display = "";
+        img.src = funSrc;
+      } else {
+        img.style.display = "none";
+      }
     } else {
       if (seriousSrc) {
-        img.src = seriousSrc;
         img.style.display = "";
+        img.src = seriousSrc;
       } else {
         img.style.display = "none";
       }

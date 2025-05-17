@@ -272,6 +272,14 @@ body {
   z-index: 0;
   border-radius: 1.04vw; 
   pointer-events: none; 
+  backface-visibility: hidden;
+  image-rendering: auto;
+}
+
+body:not(.fun-mode) .btn1-serious {
+  width: 100%;
+  height: 90%;
+  object-fit: contain;
 }
 
 #modeToggle {
