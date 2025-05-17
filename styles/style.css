@@ -211,11 +211,14 @@ body {
 .text-mask {
   font-size: 4svh;
   font-weight: bold;
-  mix-blend-mode: difference; 
   color: #ffffff;
   position: absolute;
   z-index: 2;
   pointer-events: none;
+}
+
+body.fun-mode .text-mask {
+  mix-blend-mode: difference; 
 }
 
 .white-text {
