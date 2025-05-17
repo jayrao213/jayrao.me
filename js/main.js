@@ -44,8 +44,13 @@ if (isFunMode) {
     loopImgs.forEach(img => {
       const seriousSrc = img.dataset.serious;
       if (seriousSrc) {
-        img.style.display = "";
-        img.src = `${seriousSrc}?t=${Date.now()}`;
+        const newSrc = `${seriousSrc}?t=${Date.now()}`;
+        const preloadedImg = new Image();
+        preloadedImg.onload = () => {
+          img.src = newSrc;
+          img.style.display = "";  
+        };
+        preloadedImg.src = newSrc;
       } else {
         img.style.display = "none";
       }
