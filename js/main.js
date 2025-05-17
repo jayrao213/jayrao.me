@@ -1,18 +1,6 @@
 const toggleBtn = document.getElementById("modeToggle");
 const loopImgs = document.querySelectorAll(".loop");
 
-const preloadAndDisplayGIFs = (srcs, callback) => {
-  let loaded = 0;
-  srcs.forEach((src) => {
-    const img = new Image();
-    img.onload = () => {
-      loaded++;
-      if (loaded === srcs.length) callback();
-    };
-    img.src = `${src}?t=${Date.now()}`;
-  });
-};
-
 const isFunMode = localStorage.getItem('funMode') === 'true';
 document.body.classList.toggle("fun-mode", isFunMode);
 toggleBtn.innerHTML = isFunMode
@@ -23,35 +11,20 @@ if (isFunMode) {
   toggleBtn.classList.remove('show');
   setTimeout(() => {
     toggleBtn.classList.add('show');
-  }, 4000); 
+  }, 4000);
 } else {
   toggleBtn.classList.add('show');
 }
 
-if (isFunMode) {
-  loopImgs.forEach(img => {
-    const funSrc = img.dataset.fun;
-    if (funSrc) {
-      img.style.display = "";
-      img.src = `${funSrc}?t=${Date.now()}`;
-    } else {
-      img.style.display = "none";
-    }
-  });
-} else {
-  const seriousGIFs = [...loopImgs].filter(img => img.dataset.serious).map(img => img.dataset.serious);
-  preloadAndDisplayGIFs(seriousGIFs, () => {
-    loopImgs.forEach(img => {
-      const seriousSrc = img.dataset.serious;
-      if (seriousSrc) {
-        img.style.display = "";
-        img.src = `${seriousSrc}?t=${Date.now()}`;
-      } else {
-        img.style.display = "none";
-      }
-    });
-  });
-}
+loopImgs.forEach(img => {
+  const src = isFunMode ? img.dataset.fun : img.dataset.serious;
+  if (src) {
+    img.style.display = "";
+    img.src = src;
+  } else {
+    img.style.display = "none";
+  }
+});
 
 toggleBtn.addEventListener("click", () => {
   const isFunNow = !document.body.classList.contains("fun-mode");
@@ -71,35 +44,24 @@ toggleBtn.addEventListener("click", () => {
     ? '<span class="mode-text">😎Pro😎</span>'
     : '<span class="mode-text">😈Fun😈</span>';
 
-  if (isFunNow) {
+  loopImgs.forEach(img => {
+    img.style.display = "none";
+    img.src = '';
+  });
+
+  requestAnimationFrame(() => {
     loopImgs.forEach(img => {
-      const funSrc = img.dataset.fun;
-      if (funSrc) {
+      const src = isFunNow ? img.dataset.fun : img.dataset.serious;
+      if (src) {
+        img.src = src;
         img.style.display = "";
-        img.src = `${funSrc}?t=${Date.now()}`;
-      } else {
-        img.style.display = "none";
       }
     });
-  } else {
-    loopImgs.forEach(img => {
-      img.style.display = "none";
-    });
-    const seriousGIFs = [...loopImgs].filter(img => img.dataset.serious).map(img => img.dataset.serious);
-    preloadAndDisplayGIFs(seriousGIFs, () => {
-      loopImgs.forEach(img => {
-        const seriousSrc = img.dataset.serious;
-        if (seriousSrc) {
-          img.style.display = "";
-          img.src = `${seriousSrc}?t=${Date.now()}`;
-        }
-      });
-    });
-  }
+  });
 });
 
 document.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', e => {
+  link.addEventListener('click', () => {
     localStorage.setItem('funMode', document.body.classList.contains('fun-mode'));
   });
 });
