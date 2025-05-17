@@ -44,13 +44,8 @@ if (isFunMode) {
     loopImgs.forEach(img => {
       const seriousSrc = img.dataset.serious;
       if (seriousSrc) {
-        const newSrc = `${seriousSrc}?t=${Date.now()}`;
-        const preloadedImg = new Image();
-        preloadedImg.onload = () => {
-          img.src = newSrc;
-          img.style.display = "";  
-        };
-        preloadedImg.src = newSrc;
+        img.style.display = "";
+        img.src = `${seriousSrc}?t=${Date.now()}`;
       } else {
         img.style.display = "none";
       }
@@ -87,6 +82,9 @@ toggleBtn.addEventListener("click", () => {
       }
     });
   } else {
+    loopImgs.forEach(img => {
+      img.style.display = "none";
+    });
     const seriousGIFs = [...loopImgs].filter(img => img.dataset.serious).map(img => img.dataset.serious);
     preloadAndDisplayGIFs(seriousGIFs, () => {
       loopImgs.forEach(img => {
@@ -94,8 +92,6 @@ toggleBtn.addEventListener("click", () => {
         if (seriousSrc) {
           img.style.display = "";
           img.src = `${seriousSrc}?t=${Date.now()}`;
-        } else {
-          img.style.display = "none";
         }
       });
     });
