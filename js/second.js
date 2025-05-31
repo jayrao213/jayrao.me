@@ -73,7 +73,7 @@ function autoFlipCards() {
       angle -= 180;
       container.dataset.angle = angle;
       flipper.style.transform = `rotateY(${angle}deg)`;
-      flipper.style.zIndex = (angle % 360 === 0) ? 1 : 2; 
+      flipper.style.zIndex = (angle % 360 === 0) ? 1 : 2;
       count++;
       if (count < maxFlips) setTimeout(flip, 500);
     }
@@ -183,19 +183,30 @@ window.addEventListener('DOMContentLoaded', () => {
   const h1 = document.querySelector('h1');
   if (h1) h1.dataset.original = h1.textContent.trim();
 
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
+  const menuOverlay = document.getElementById('menuOverlay');
+  const toggle = document.getElementById('funToggle');
+  const body = document.body;
+
   const savedMode = localStorage.getItem('funMode');
   const isFun = savedMode === 'true';
-  document.body.classList.toggle('fun-mode', isFun);
 
-  const toggle = document.getElementById('funToggle');
+  body.classList.toggle('fun-mode', isFun);
+  if (toggle) toggle.textContent = isFun ? '😎' : '😈';
+
+  if (isFun) {
+    animateH1();
+  }
+
   if (toggle) {
-    toggle.textContent = isFun ? '😎' : '😈';
     toggle.addEventListener('click', () => {
-      const isNowFun = document.body.classList.toggle('fun-mode');
+      const isNowFun = body.classList.toggle('fun-mode');
       localStorage.setItem('funMode', isNowFun);
       toggle.textContent = isNowFun ? '😎' : '😈';
       resetAnimations();
       animateH1();
+
       if (isNowFun) {
         autoFlipCards();
         explodeAndReassembleProfile();
@@ -204,18 +215,30 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  animateH1();
+  if (hamburger && mobileNav && menuOverlay) {
+    function toggleMenu() {
+      hamburger.classList.toggle('active');
+      mobileNav.classList.toggle('active');
+      menuOverlay.classList.toggle('active');
+      body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+    }
 
-  document.querySelectorAll('.flip-container').forEach(container => {
-    const flipper = container.querySelector('.flipper');
-    container.dataset.angle = '0';
-    container.addEventListener('click', () => {
-      let angle = parseInt(container.dataset.angle, 10) + 180;
-      container.dataset.angle = angle;
-      flipper.style.transform = `rotateY(${angle}deg)`;
-      flipper.style.zIndex = (angle % 360 === 0) ? 1 : 2; 
+    hamburger.addEventListener('click', toggleMenu);
+    menuOverlay.addEventListener('click', toggleMenu);
+
+    const mobileNavLinks = mobileNav.querySelectorAll('a');
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (mobileNav.classList.contains('active')) toggleMenu();
+      });
     });
-  });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768 && mobileNav.classList.contains('active')) {
+        toggleMenu();
+      }
+    });
+  }
 
   if (isFun) {
     autoFlipCards();
@@ -237,39 +260,4 @@ document.querySelectorAll('a').forEach(link => {
 document.querySelectorAll('.front.card[data-image]').forEach(front => {
   const img = front.getAttribute('data-image');
   front.style.backgroundImage = `url('${img}')`;
-});
-
-// Mobile Navigation
-document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.getElementById('hamburger');
-    const mobileNav = document.getElementById('mobileNav');
-    const menuOverlay = document.getElementById('menuOverlay');
-    const body = document.body;
-
-    function toggleMenu() {
-        hamburger.classList.toggle('active');
-        mobileNav.classList.toggle('active');
-        menuOverlay.classList.toggle('active');
-        body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
-    }
-
-    hamburger.addEventListener('click', toggleMenu);
-    menuOverlay.addEventListener('click', toggleMenu);
-
-    // Close menu when clicking a link
-    const mobileNavLinks = mobileNav.querySelectorAll('a');
-    mobileNavLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            if (mobileNav.classList.contains('active')) {
-                toggleMenu();
-            }
-        });
-    });
-
-    // Close menu on window resize if open
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 768 && mobileNav.classList.contains('active')) {
-            toggleMenu();
-        }
-    });
 });
