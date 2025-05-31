@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Jay Rao - Projects</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Jay Rao's projects including émusér, blu.jay, and Adaptive Microwave Interface. Showcasing expertise in AI, web development, and hardware engineering.">
+  <meta name="keywords" content="Jay Rao, Projects, émusér, blu.jay, Adaptive Microwave Interface, AI, Web Development, Hardware Engineering">
+  <meta name="author" content="Jay Rao">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Jay Rao - Projects">
+  <meta property="og:description" content="Portfolio of projects including AI-powered job platform, investment platform, and accessible hardware solutions.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jayrao.me/pages/projects.html">
+  
+  <!-- Preload Critical Resources -->
+  <link rel="preload" href="../styles/style2.css" as="style">
+  <link rel="preload" href="../js/second.js" as="script">
+  <link rel="preload" href="../images/linkedin.png" as="image">
+  <link rel="preload" href="../images/github.png" as="image">
+  <link rel="preload" href="../images/resume.png" as="image">
+  <link rel="preload" href="../images/email.png" as="image">
+  <link rel="preload" href="../images/emuser.png" as="image">
+  <link rel="preload" href="../images/blujay.png" as="image">
+  <link rel="preload" href="../images/ami.png" as="image">
+  
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="stylesheet" href="../styles/style2.css" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="left-icons">
+        <a href="http://linkedin.com/in/jay-rao213" target="_blank"><img src="../images/linkedin.png" alt="LinkedIn" loading="lazy" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>
+        <a href="https://github.com/jayrao213?tab=repositories" target="_blank"><img src="../images/github.png" alt="GitHub" loading="lazy" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>
+        <a id="funToggle" title="Toggle Fun Mode" class="emoji-toggle">😈</a>
+        <a href="../pdfs/Jay_Rao_Resume.pdf" target="_blank"><img src="../images/resume.png" alt="Resume" loading="lazy" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>
+        <a href="mailto:jayrao2028@u.northwestern.edu" target="_blank"><img src="../images/email.png" alt="Email" loading="lazy" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>
+      </div>
+      <a href="../index.html" class="home-button">Home</a>
+    </div>
+  </header>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <nav class="mobile-nav" id="mobileNav">
+    <ul>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="about.html">About Me | Contact</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="projects.html">Projects</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h1>Projects</h1>
+
+    <section class="flip-container">
+      <div class="flipper">
+        <div class="front card card-hover-effect" data-image="../images/emuser.png">
+        </div>
+        <div class="back card">
+          <h2 class="project-title">
+          <div class="title-row">
+            émusér
+            <a href="https://github.com/jayrao213/emuser" class="github" target="_blank">
+              <img src="../images/github.png" alt="GitHub">
+            </a>   
+          </div>       
+            <div class="tech-stack">
+              <span class="badge">Python</span>
+              <span class="badge">JavaScript</span>
+              <span class="badge">FastAPI</span>
+              <span class="badge">Next.js</span>
+              <span class="badge">Tailwind CSS</span>
+              <span class="badge">OpenAI API</span>
+              <span class="badge">SBERT</span>
+              <span class="badge">FAISS</span>
+              <span class="badge">Playwright</span>
+              <span class="badge">Fly.io</span>
+            </div>
+          </h2>
+          <p>- Designing an AI-powered job platform to match resumes with live listings from LinkedIn and Handshake</p>
+          <p>- Building a FastAPI backend to parse resumes using Unstructured.io and PyMuPDF, extract data with spaCy and GPT-4, and suggest relevant professionals to connect with via PhantomBuster and OpenAI</p>
+          <p>- Implementing a Playwright scraper and semantic job matching with SBERT and FAISS vector search</p>
+          <p>- Creating a Next.js + Tailwind frontend with resume upload, match scores, and job alert features</p>
+          <p>- Deploying globally on Fly.io for fast, scalable, low-latency access across regions</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="flip-container">
+      <div class="flipper">
+        <div class="front card card-hover-effect" data-image="../images/blujay.png">
+        </div>
+        <div class="back card">
+          <h2 class="project-title">
+            <div class="title-row">
+              blu.jay
+              <a href="https://github.com/jayrao213/blu.jay" class="github" target="_blank">
+                <img src="../images/github.png" alt="GitHub">
+              </a>
+            </div>
+            <div class="tech-stack">
+              <span class="badge">Python</span>
+              <span class="badge">JavaScript</span>
+              <span class="badge">FastAPI</span>
+              <span class="badge">React Native</span>
+              <span class="badge">PyTorch</span>
+              <span class="badge">scikit-learn</span>
+              <span class="badge">LightGBM</span>
+              <span class="badge">Prophet</span>
+              <span class="badge">Docker</span>
+              <span class="badge">Render</span>
+            </div>
+          </h2>
+          <p>- Building a full-stack investment platform across stocks, crypto, real estate, vehicles, and alternative assets</p>
+          <p>- Engineering a FastAPI backend for real-time buy/sell decisions using ML models (scikit-learn, LightGBM, Prophet, PyTorch), combining predictions via a continuously weighted function over infinite time intervals</p>
+          <p>- Integrating financial APIs—Tiingo, CryptoCompare, Realtor.com, Kelley Blue Book, StockX, and eBay—with Alpaca and Coinbase for real-time/historical market data ingestion and automated stock and crypto trading</p>
+          <p>- Developing a cross-platform mobile and web app using React Native + Expo, enabling users to monitor performance, receive live strategy alerts, and explore ML-driven insights across asset classes</p>
+          <p>- Containerizing the backend with Docker and deploying via Render for scalable, cloud-native access</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="flip-container">
+      <div class="flipper">
+        <div class="front card card-hover-effect" data-image="../images/ami.png">
+        </div>
+        <div class="back card">
+          <h2 class="project-title">
+            <div class="title-row">
+              Adaptive Microwave Interface
+              <a href="https://github.com/jayrao213/Adaptive-Microwave-Interface" class="github" target="_blank">
+                <img src="../images/github.png" alt="GitHub">
+              </a>
+            </div>
+            <div class="tech-stack">
+              <span class="badge">MicroPython</span>
+              <span class="badge">Raspberry Pi</span>
+              <span class="badge">Onshape</span>
+            </div>
+          </h2>
+          <p>- Served as Project Manager of a four-person team to design an accessible microwave interface for individuals with special needs at North Center Community Day Service</p>
+          <p>- Programmed a Raspberry Pi Pico with MicroPython to deliver audio feedback, LED power indicators, and tactile controls via start/+30s buttons and a custom dial with preset food options designed in Onshape</p>
+          <p>- Led user-centered design via research, prototyping, and testing to ensure alignment with client needs</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <hr/> <div>© Jay Rao. All rights reserved.</div>
+    </footer>
+  </main>
+
+  <script src="../js/second.js"></script>
+  <script src="../js/error-boundary.js"></script>
+</body>
+</html>
