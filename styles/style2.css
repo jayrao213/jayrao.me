@@ -744,6 +744,10 @@ body.fun-mode .timeline-item.right .timeline-card {
   cursor: pointer;
 }
 
+.flip-container.flipped .flipper {
+  transform: rotateY(180deg);
+}
+
 .front, .back {
   position: absolute;
   top: 0;
