@@ -90,6 +90,7 @@ function autoFlipCards() {
       } else {
         setTimeout(() => {
           container.dataset.autoFlipping = 'false';
+          console.log('Auto-flipping completed for container'); 
         }, 500);
       }
     }
@@ -196,6 +197,44 @@ function explodeAndReassembleProfile() {
   }, 400);
 }
 
+function initializeFlipContainers() {
+  document.querySelectorAll('.flip-container').forEach(container => {
+    container.dataset.manualAngle = '0';
+    container.dataset.autoFlipping = 'false';
+
+    const newContainer = container.cloneNode(true);
+    container.parentNode.replaceChild(newContainer, container);
+
+    newContainer.addEventListener('click', function(e) {
+      console.log('Card clicked, autoFlipping status:', this.dataset.autoFlipping);
+      
+      if (this.dataset.autoFlipping === 'true') {
+        console.log('Click ignored - auto-flipping in progress');
+        return;
+      }
+      
+      const flipper = this.querySelector('.flipper');
+      if (!flipper) return;
+   
+      const currentTransform = flipper.style.transform;
+      let currentAngle = 0;
+      
+      if (currentTransform && currentTransform.includes('rotateY(')) {
+        const match = currentTransform.match(/rotateY\((-?\d+)deg\)/);
+        if (match) {
+          currentAngle = parseInt(match[1], 10);
+        }
+      }
+      
+      const newAngle = currentAngle + 180;
+      flipper.style.transform = `rotateY(${newAngle}deg)`;
+      this.dataset.manualAngle = newAngle;
+      
+      console.log('Card flipped to angle:', newAngle);
+    });
+  });
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   const h1 = document.querySelector('h1');
   if (h1) h1.dataset.original = h1.textContent.trim();
@@ -225,9 +264,15 @@ window.addEventListener('DOMContentLoaded', () => {
       animateH1();
 
       if (isNowFun) {
-        autoFlipCards();
-        explodeAndReassembleProfile();
-        adjustProjectCardHeights();
+        setTimeout(() => {
+          autoFlipCards();
+          explodeAndReassembleProfile();
+          adjustProjectCardHeights();
+        }, 100);
+      } else {
+        document.querySelectorAll('.flip-container').forEach(container => {
+          container.dataset.autoFlipping = 'false';
+        });
       }
     });
   }
@@ -257,32 +302,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  document.querySelectorAll('.flip-container').forEach(container => {
-    container.dataset.manualAngle = '0';
-    container.dataset.autoFlipping = 'false';
-    
-    container.addEventListener('click', () => {
-      if (container.dataset.autoFlipping === 'true') return;
-      
-      const flipper = container.querySelector('.flipper');
-   
-      const currentTransform = flipper.style.transform;
-      let currentAngle = 0;
-      
-      if (currentTransform && currentTransform.includes('rotateY(')) {
-        const match = currentTransform.match(/rotateY\((-?\d+)deg\)/);
-        if (match) {
-          currentAngle = parseInt(match[1], 10);
-        }
-      }
-      
-      const newAngle = currentAngle + 180;
-
-      flipper.style.transform = `rotateY(${newAngle}deg)`;
-
-      container.dataset.manualAngle = newAngle;
-    });
-  });
+  initializeFlipContainers();
 
   document.querySelectorAll('.front.card[data-image]').forEach(front => {
     const img = front.getAttribute('data-image');
@@ -290,9 +310,11 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   if (isFun) {
-    autoFlipCards();
-    explodeAndReassembleProfile();
-    adjustProjectCardHeights();
+    setTimeout(() => {
+      autoFlipCards();
+      explodeAndReassembleProfile();
+      adjustProjectCardHeights();
+    }, 100);
   }
 });
 
