@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Jay Rao - Letter Cascade</title>
+
+  <meta name="description" content="Letter Cascade - A dynamic text animation project showcasing modern web development techniques and creative programming.">
+  <meta name="keywords" content="Jay Rao, Letter Cascade, Text Animation, Web Development, JavaScript, Creative Programming">
+  <meta name="author" content="Jay Rao">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:title" content="Jay Rao - Letter Cascade">
+  <meta property="og:description" content="A dynamic text animation project showcasing modern web development techniques and creative programming.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jayrao.me/pages/lettercascade.html">
+
+  <link rel="preload" href="../styles/style2.css" as="style">
+  <link rel="preload" href="../scripts/second.js" as="script">
+  <link rel="preload" href="../images/linkedin.png" as="image">
+  <link rel="preload" href="../images/github.png" as="image">
+  <link rel="preload" href="../images/resume.png" as="image">
+  <link rel="preload" href="../images/email.png" as="image">
+  <link rel="preload" href="../images/lettercascade.png" as="image">
+  
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="stylesheet" href="../styles/style2.css" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="left-icons">
+        <a href="http://linkedin.com/in/jay-rao213" target="_blank"><img src="../images/linkedin.png" alt="LinkedIn" loading="lazy" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>
+        <a href="https://github.com/jayrao213?tab=repositories" target="_blank"><img src="../images/github.png" alt="GitHub" loading="lazy" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>
+        <a id="funToggle" title="Toggle Fun Mode" class="emoji-toggle">😈</a>
+        <a href="../pdfs/Jay_Rao_Resume.pdf" target="_blank"><img src="../images/resume.png" alt="Resume" loading="lazy" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>
+        <a href="mailto:jayrao2028@u.northwestern.edu" target="_blank"><img src="../images/email.png" alt="Email" loading="lazy" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>
+      </div>
+      <a href="../index.html" class="home-button">Home</a>
+    </div>
+  </header>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <nav class="mobile-nav" id="mobileNav">
+    <ul>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="about.html">About Me | Contact</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="projects.html">Projects</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="project-title-row">
+      <h1>Letter Cascade</h1>
+      <a href="https://github.com/jayrao213/lettercascade" class="github" target="_blank">
+        <img src="../images/github.png" alt="GitHub">
+      </a>   
+    </div>
+    
+    <div class="tech-stack">
+      <span class="badge">JavaScript</span>
+      <span class="badge">HTML</span>
+      <span class="badge">CSS</span>
+    </div>
+    
+    <div class="project-description">
+      <p>- Designed and developed a fast-paced, browser-based word game where players catch falling letters to form valid English words under time pressure</p>
+      <p>- Implemented smooth falling letter animations and responsive input handling to support both mouse clicks and real-time keyboard interactions</p>
+      <p>- Integrated a built-in dictionary for real-word validation, ensuring accurate scoring and enhancing the game’s educational value</p>
+      <p>- Engineered core game mechanics including a 60-second timer, dynamic scoring system, and interactive word buffer with submit/delete functionality</p>
+      <p>- Optimized gameplay with mobile-responsive layouts, randomized letter colors for visual variety, and seamless cross-device performance</p>   
+    </div>
+
+    <footer>
+      <hr/> <div>© Jay Rao. All rights reserved.</div>
+    </footer>
+  </main>
+
+  <script src="../scripts/second.js"></script>
+  <script src="../scripts/error-boundary.js"></script>
+</body>
+</html>

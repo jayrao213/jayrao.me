@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Jay Rao - Portfolio</title>
+
+  <meta name="description" content="Jay Rao - Computer Science student at Northwestern University. Innovator & Builder passionate about AI and emerging technologies.">
+  <meta name="keywords" content="Jay Rao, Northwestern University, Computer Science, AI, Software Engineering, Portfolio">
+  <meta name="author" content="Jay Rao">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:title" content="Jay Rao - Portfolio">
+  <meta property="og:description" content="Computer Science student at Northwestern University. Innovator & Builder passionate about AI and emerging technologies.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jayrao.me">
+  
+  <link rel="preload" href="styles/style.css" as="style">
+  <link rel="preload" href="scripts/main.js" as="script">
+  <link rel="preload" href="images/linkedin.png" as="image">
+  <link rel="preload" href="images/github.png" as="image">
+  <link rel="preload" href="images/resume.png" as="image">
+  <link rel="preload" href="images/email.png" as="image">
+  
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+  <button id="modeToggle">
+    <span class="mode-text">😈Fun😈</span>
+  </button>  
+
+  <div class="animated-title">
+    <div class="text-top">
+      <div>
+        <span class="highlight-name">Jay Rao</span>
+        <span>CS @ Northwestern</span>
+      </div>
+    </div>
+    <div class="text-bottom">
+      <div>Innovator & Builder</div>
+    </div>
+  </div>  
+
+  <div class="image-buttons">
+    <div class="icon-wrapper">
+      <a href="http://linkedin.com/in/jay-rao213" target="_blank">
+        <img src="images/linkedin.png" alt="Linkedin" loading="lazy" onerror="this.onerror=null; this.src='images/fallback.png';">
+      </a>
+    </div>
+    <div class="icon-wrapper">
+      <a href="https://github.com/jayrao213?tab=repositories" target="_blank">
+        <img src="images/github.png" alt="Github" loading="lazy" onerror="this.onerror=null; this.src='images/fallback.png';">
+      </a>
+    </div>
+    <div class="icon-wrapper">
+      <a href="pdfs/Jay_Rao_Resume.pdf" target="_blank">
+        <img src="images/resume.png" alt="Resume" loading="lazy" onerror="this.onerror=null; this.src='images/fallback.png';">
+      </a>
+    </div>
+    <div class="icon-wrapper">
+      <a href="mailto:jayrao2028@u.northwestern.edu" target="_blank">
+        <img src="images/email.png" alt="Email me!" loading="lazy" onerror="this.onerror=null; this.src='images/fallback.png';">
+      </a>
+    </div>
+  </div>  
+
+  <div class="button-container">
+    <a href="pages/about.html" class="button btn1 tall-button">
+      <img class="loop btn1-serious" style="display: none;" data-fun="images/loop.webp" data-serious="images/loop.gif">
+      <span class="text-mask">About Me | Contact</span>
+    </a>
+
+    <div class="right-column">
+      <a href="pages/experience.html" class="button btn2 short-button">
+        <img class="loop" style="display: none;" data-fun="images/shapes.gif" data-serious="">
+        <span class="black-text">Experience</span>
+      </a>
+  
+      <a href="pages/projects.html" class="button btn3 short-button">
+        <img class="loop" style="display: none;" data-fun="images/flowers.gif" data-serious="">
+        <span class="white-text">Projects</span>
+      </a>
+    </div>
+  </div>  
+
+  <script src="scripts/main.js"></script>
+  <script src="scripts/error-boundary.js"></script>
+</body>
+</html>
