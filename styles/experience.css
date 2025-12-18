@@ -1,0 +1,226 @@
+/* ====================================== */
+/* EXPERIENCE PAGE SPECIFIC STYLES        */
+/* ====================================== */
+
+/* Timeline Structure */
+.timeline {
+  position: relative;
+  width: 100%;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  background-color: #333;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.timeline-item {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin: 3rem 0;
+}
+
+.timeline-item.right {
+  justify-content: flex-start;
+}
+
+.timeline-dot {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: #ffffff;
+  border: 0.25rem solid #121212;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+/* Timeline Card */
+.timeline-card {
+  background-color: #1c1c1c;
+  color: #e0e0e0;
+  padding: 1.5rem 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(255, 255, 255, 0.05);
+  border: 1px solid #333333;
+  z-index: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 90%;
+}
+
+.timeline-card:hover {
+  transform: translateY(-0.3rem);
+  box-shadow: 0 0.75rem 2rem rgba(255, 255, 255, 0.08);
+  border-color: #555;
+}
+
+.timeline-item.left .timeline-card {
+  margin-right: calc(50% + 2rem);
+}
+
+.timeline-item.right .timeline-card {
+  margin-left: calc(50% + 2rem);
+}
+
+/* Card Header */
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 1rem;
+}
+
+.logo-container {
+  flex-shrink: 0;
+}
+
+.company-logo {
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 2px solid #333;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header h2 {
+  margin: 0 0 0.2rem 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.card-header h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #a0a0a0;
+}
+
+.date-badge {
+  font-size: 0.85rem;
+  color: #888;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* Experience List */
+.experience-list {
+  padding-left: 1.2rem;
+  margin: 0;
+}
+
+.experience-list li {
+  color: #e1e1e1;
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+  line-height: 1.6;
+  margin-bottom: 0.6rem;
+  list-style-type: disc;
+}
+
+/* Fun Mode Animations */
+@keyframes swingInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-150%) rotate(-15deg);
+  }
+  60% {
+    transform: translateX(20%) rotate(5deg);
+    opacity: 1;
+  }
+  80% {
+    transform: translateX(-10%) rotate(-2deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+}
+
+@keyframes swingInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(150%) rotate(15deg);
+  }
+  60% {
+    transform: translateX(-20%) rotate(-5deg);
+    opacity: 1;
+  }
+  80% {
+    transform: translateX(10%) rotate(2deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+}
+
+body.fun-mode .timeline-item.left .timeline-card {
+  animation: swingInFromLeft 1.25s ease forwards;
+}
+
+body.fun-mode .timeline-item.right .timeline-card {
+  animation: swingInFromRight 1.25s ease forwards;
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 768px) {
+  .timeline::before {
+    left: -2rem;
+    transform: none;
+  }
+
+  .timeline-item {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 2.5rem;
+  }
+
+  .timeline-item.left .timeline-card,
+  .timeline-item.right .timeline-card {
+    margin: 0;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .timeline-dot {
+    left: -1.875rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .card-header {
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .header-text {
+    align-items: center;
+  }
+
+  .company-logo {
+    width: 3rem;
+    height: 3rem;
+  }
+}

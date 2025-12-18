@@ -1,0 +1,471 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ====================================== */
+/* SHARED STYLES FOR ALL PAGES           */
+/* ====================================== */
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #121212;
+  color: #ffffff;
+  scroll-behavior: smooth;
+}
+
+/* ====================================== */
+/* HEADER & NAVIGATION                    */
+/* ====================================== */
+
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #1f1f1f;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
+  z-index: 1500;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 1.7vw;
+}
+
+.left-icons {
+  position: absolute;
+  right: 1.7vw;
+  display: flex;
+  gap: 1vw;
+  justify-content: center;
+}
+
+.left-icons img {
+  width: clamp(1.5rem, 4vw, 2rem);
+  height: clamp(1.5rem, 4vw, 2rem);
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  border: none;
+  object-fit: contain;
+  transition: scale 0.2s ease;
+}
+
+.left-icons img:hover {
+  scale: 1.2;
+}
+
+.left-icons a img {
+  animation: slideInLeftBounce 0.8s ease forwards;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+.left-icons a:nth-of-type(1) img {
+  animation: slideInLeftBounce 0.8s ease forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+
+.left-icons a:nth-of-type(2) img {
+  animation: slideInLeftBounce 0.8s ease forwards;
+  animation-delay: 0.6s;
+  opacity: 0;
+}
+
+.left-icons .emoji-toggle {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: scale 0.2s ease;
+  opacity: 0;
+  animation: slideInTopBounce 0.8s ease forwards;
+  animation-delay: 0.9s;
+}
+
+.left-icons a:nth-of-type(4) img {
+  animation: slideInRightBounce 0.8s ease forwards;
+  animation-delay: 0.6s;
+  opacity: 0;
+}
+
+.left-icons a:nth-of-type(5) img {
+  animation: slideInRightBounce 0.8s ease forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+
+.emoji-toggle:hover {
+  scale: 1.2;
+}
+
+body:not(.fun-mode) .emoji-toggle {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.home-button {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  opacity: 1;
+  background-color: #333333;
+  padding: 0.5em 1.2em;
+  border-radius: 1em;
+}
+
+.home-button:hover {
+  background-color: #404040;
+}
+
+body:not(.fun-mode) .left-icons a img,
+body:not(.fun-mode) .home-button {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+body:not(.fun-mode) .left-icons img,
+body:not(.fun-mode) .emoji-toggle {
+  animation: none !important;
+  opacity: 1 !important;
+  transition: scale 0.2s ease !important;
+}
+
+body:not(.fun-mode) .left-icons img:hover,
+body:not(.fun-mode) .emoji-toggle:hover {
+  scale: 1.2;
+}
+
+body:not(.fun-mode) .home-button,
+body.fun-mode .home-button {
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+body.fun-mode .left-icons img:hover,
+body.fun-mode .emoji-toggle:hover {
+  scale: 1.2;
+}
+
+/* ====================================== */
+/* HAMBURGER MENU                         */
+/* ====================================== */
+
+.hamburger {
+  position: absolute;
+  left: 1.7vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 1.5em;
+  height: 1.2em;
+  cursor: pointer;
+  z-index: 1600;
+  padding: 0.4em;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.hamburger:hover {
+  opacity: 1;
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 0.15em;
+  background-color: #ffffff;
+  border-radius: 0.1em;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: translateY(0.4em) rotate(45deg);
+  transform-origin: center;
+  transition-delay: 0.1s;
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-1em);
+  transition-delay: 0s;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-0.4em) rotate(-45deg);
+  transform-origin: center;
+  transition-delay: 0.1s;
+}
+
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 35%;
+  max-width: 10em;
+  height: 100vh;
+  background-color: rgba(31, 31, 31, 0.98);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 4em 1em 2em;
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1550;
+  box-shadow: -0.125rem 0 0.25rem rgba(0, 0, 0, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav.active {
+  right: 0;
+}
+
+.mobile-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mobile-nav li {
+  margin: 0.8em 0;
+  opacity: 0;
+  transform: translateX(-1em);
+  transition: all 0.3s ease;
+}
+
+.mobile-nav.active li {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.mobile-nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.95em;
+  font-weight: 600;
+  display: block;
+  padding: 0.4em 0;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.mobile-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #404040;
+  transition: width 0.3s ease;
+}
+
+.mobile-nav a:hover {
+  color: #e0e0e0;
+  transform: translateX(-0.2em);
+}
+
+.mobile-nav a:hover::after {
+  width: 100%;
+}
+
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1540;
+}
+
+.menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ====================================== */
+/* MAIN CONTENT                           */
+/* ====================================== */
+
+main {
+  padding: 4rem 2vw 2rem 2vw;
+  max-width: 70vw;
+  margin: 0 auto;
+}
+
+section {
+  margin-bottom: clamp(3rem, 6vh, 5rem);
+}
+
+h1 {
+  font-size: clamp(2.5rem, 6vw, 3rem);
+  margin-bottom: clamp(1rem, 2vh, 2rem);
+  color: #ffffff;
+  text-align: center;
+}
+
+h2 {
+  font-size: clamp(1.45rem, 4vw, 2rem);
+  margin-bottom: clamp(1rem, 2vh, 2rem);
+  color: #f5f5f5;
+}
+
+h3 {
+  font-size: clamp(1.15rem, 4vw, 1.4rem);
+  margin-bottom: clamp(1rem, 2vh, 2rem);
+  color: #ebebeb;
+}
+
+h4 {
+  font-size: clamp(1.325rem, 4vw, 1.7rem);
+  margin-bottom: clamp(1rem, 2vh, 2rem);
+  margin-top: clamp(0.5rem, 1.5vh, 2rem);
+  color: #ebebeb;
+}
+
+p {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  line-height: 1.6;
+  color: #e1e1e1;
+}
+
+footer {
+  text-align: center;
+  margin-top: 4vh;
+}
+
+section.card {
+  background-color: #1c1c1c;
+  border: 0.0625rem solid #333;
+  border-radius: 0.75rem;
+  padding: 1rem 2rem;
+  margin-top: 2.5rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+section.card:hover {
+  transform: translateY(-0.3125rem);
+  box-shadow: 0 0.5rem 1rem rgba(255, 255, 255, 0.1);
+}
+
+.badge {
+  background-color: #1c1c1c;
+  color: #fff;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.65rem;
+  border-radius: 0.4rem;
+  border: 1px solid #444;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: default;
+  line-height: 1.5;
+}
+
+/* ====================================== */
+/* ANIMATIONS                             */
+/* ====================================== */
+
+@keyframes slideInLeftBounce {
+  0% {
+    transform: translateX(-200%) scale(0.8);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(30%) scale(1.05);
+    opacity: 1;
+  }
+  80% {
+    transform: translateX(-10%) scale(0.98);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInTopBounce {
+  0% {
+    transform: translateY(-200%) scale(0.8);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(30%) scale(1.05);
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(-10%) scale(0.98);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRightBounce {
+  0% {
+    transform: translateX(200%) scale(0.8);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(-30%) scale(1.05);
+    opacity: 1;
+  }
+  80% {
+    transform: translateX(10%) scale(0.98);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* ====================================== */
+/* MOBILE RESPONSIVE                      */
+/* ====================================== */
+
+@media screen and (max-width: 768px) {
+  .hamburger {
+    position: static;
+    margin-right: 0.5em;
+  }
+
+  .container {
+    justify-content: space-between;
+  }
+
+  .left-icons {
+    position: absolute;
+    left: 35%;
+    transform: translateX(-50%);
+    gap: 0.5em;
+  }
+
+  .home-button {
+    margin-left: auto;
+  }
+
+  .left-icons img {
+    width: 1.5em;
+    height: 1.5em;
+  }
+
+  .container {
+    padding: 1rem;
+  }
+
+  main {
+    padding-top: 5rem;
+  }
+}
