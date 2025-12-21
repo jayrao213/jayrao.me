@@ -224,3 +224,15 @@ body.fun-mode .timeline-item.right .timeline-card {
     height: 3rem;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .timeline-card {
+    height: auto !important; 
+    min-height: 0;          
+    display: block;          
+  }
+  
+  .experience-list {
+    margin-bottom: 0;       
+  }
+}

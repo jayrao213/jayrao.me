@@ -2,27 +2,35 @@
 /* PROJECTS PAGE SPECIFIC STYLES          */
 /* ====================================== */
 
+/* Projects Container */
+.projects-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 1fr; /* This ensures equal height on Desktop */
+  gap: 5rem;
+  margin-top: 3rem;
+}
+
 /* Project Row Structure */
 .project-row {
   display: flex;
   gap: 3rem;
   align-items: flex-start;
-  margin-bottom: 5rem;
   background-color: #1c1c1c;
   border: 0.0625rem solid #333;
   border-radius: 0.75rem;
   padding: 2rem;
   box-shadow: 0 0.25rem 0.5rem rgba(255, 255, 255, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  /* Ensure the card fills the grid cell height on desktop */
+  height: 100%; 
+  box-sizing: border-box;
 }
 
 .project-row:hover {
   transform: translateY(-0.3rem);
   box-shadow: 0 0.5rem 1rem rgba(255, 255, 255, 0.1);
-}
-
-.project-row:first-of-type {
-  margin-top: 3rem;
 }
 
 /* Project Image */
@@ -147,12 +155,25 @@ body:not(.fun-mode) .project-row {
   animation: none !important;
 }
 
-/* Mobile Responsive */
+/* ====================================== */
+/* MOBILE RESPONSIVE                      */
+/* ====================================== */
+
 @media screen and (max-width: 768px) {
+  .projects-container {
+    /* Switch off Grid on mobile to prevent height forcing */
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    grid-auto-rows: unset; 
+  }
+
   .project-row {
     flex-direction: column;
     gap: 1.5rem;
     padding: 1.5rem;
+    /* Reset height to allow card to grow with content */
+    height: auto; 
   }
 
   .project-image {
@@ -167,11 +188,15 @@ body:not(.fun-mode) .project-row {
   .github-button {
     align-self: flex-start;
   }
+
+  .project-row:not(:has(.github-button)) .project-title-row {
+    justify-content: center;
+  }
 }
 
 @media screen and (max-width: 480px) {
-  .project-row {
-    margin-bottom: 3rem;
+  .projects-container {
+    gap: 2rem;
   }
 
   .project-details h2 {
@@ -185,5 +210,19 @@ body:not(.fun-mode) .project-row {
   .github-button {
     padding: 0.6rem 1.2rem;
     font-size: 0.9rem;
+  }
+
+  .tech-badges {
+    justify-content: center;
+  }
+
+  .project-title-row {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .github-button {
+    padding: 0;
+    margin: 0;
   }
 }
