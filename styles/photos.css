@@ -1,0 +1,275 @@
+/* ====================================== */
+/* PHOTOS — clothesline gallery            */
+/* ====================================== */
+
+.photos-page {
+  padding: 5.5rem 1.25rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: clip;
+}
+
+.photos-page h1 {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.photos-lead {
+  text-align: center;
+  color: #a3a3a3;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  max-width: 36rem;
+  margin: 0 auto 2.5rem;
+  line-height: 1.5;
+}
+
+.clothesline-root {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.clothesline-row {
+  position: relative;
+  padding-top: 0.35rem;
+}
+
+.clothesline-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(180, 180, 180, 0.35) 8%,
+    rgba(220, 220, 220, 0.55) 50%,
+    rgba(180, 180, 180, 0.35) 92%,
+    transparent 100%
+  );
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.clothesline-track {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.75rem, 2.5vw, 1.5rem);
+  align-items: start;
+  padding-top: 1.25rem;
+}
+
+.clothesline-hang {
+  --tilt: 0deg;
+  position: relative;
+  justify-self: center;
+  width: 100%;
+  max-width: 220px;
+  cursor: grab;
+  touch-action: none;
+  transform: rotate(var(--tilt));
+  transform-origin: 50% 0%;
+  transition: box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.clothesline-hang::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -0.65rem;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 14px;
+  background: linear-gradient(180deg, #c9c9c9 0%, #8a8a8a 100%);
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.clothesline-hang::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 0.65rem;
+  background: rgba(200, 200, 200, 0.7);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.clothesline-hang:active {
+  cursor: grabbing;
+}
+
+.clothesline-hang.dragging {
+  cursor: grabbing;
+  z-index: 2000;
+  transition: none;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.45));
+}
+
+.clothesline-hang.dragging::before,
+.clothesline-hang.dragging::after {
+  opacity: 0.35;
+}
+
+.clothesline-frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: #f5f5f0;
+  padding: 0.35rem;
+  border-radius: 2px;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.25),
+    0 8px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.clothesline-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1px;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Fun mode: gentle sway (not while dragging) */
+
+/* Fun Burst Animations */
+.fun-burst-left {
+  animation: burstLeft 2.2s forwards;
+}
+
+.fun-burst-right {
+  animation: burstRight 2.2s forwards;
+}
+
+@keyframes burstLeft {
+  0% { transform: translateX(0); animation-timing-function: ease-in; }
+  50% { transform: translateX(-120vw); animation-timing-function: step-end; }
+  50.01% { transform: translateX(120vw); animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Ease-Out */ }
+  100% { transform: translateX(0); }
+}
+
+@keyframes burstRight {
+  0% { transform: translateX(0); animation-timing-function: ease-in; }
+  50% { transform: translateX(120vw); animation-timing-function: step-end; }
+  50.01% { transform: translateX(-120vw); animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Ease-Out */ }
+  100% { transform: translateX(0); }
+}
+
+/* Lightbox Styles */
+.lightbox {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.lightbox.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(0.95);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.lightbox.active .lightbox-content {
+  transform: scale(1);
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 75vh;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  background-color: transparent;
+}
+
+.lightbox-caption {
+  color: #fff;
+  margin-top: 1.25rem;
+  font-size: 1.1rem;
+  text-align: center;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -2.5rem;
+  right: -0.5rem;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2.5rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  padding: 0;
+}
+
+.lightbox-close:hover {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .lightbox-content img {
+    max-height: 65vh;
+  }
+  .lightbox-close {
+    right: 0;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .photos-page {
+    padding-top: 5rem;
+  }
+
+  .clothesline-track {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.65rem, 3vw, 1rem);
+  }
+
+  .clothesline-hang {
+    max-width: none;
+    width: 95%;
+  }
+
+  /* Stagger: right column hangs slightly lower for a loose clothesline feel */
+  .clothesline-track .clothesline-hang:nth-child(even) {
+    margin-top: clamp(0.85rem, 5vw, 1.35rem);
+  }
+}

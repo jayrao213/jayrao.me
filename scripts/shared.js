@@ -130,7 +130,7 @@ function setupFunModeToggle() {
     if (isNowFun && typeof onFunModeActivated === 'function') {
       setTimeout(() => {
         onFunModeActivated();
-      }, 100);
+      }, 50);
     }
   });
 }

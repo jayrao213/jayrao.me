@@ -14,6 +14,24 @@ if ('serviceWorker' in navigator) {
 const toggleBtn = document.getElementById("modeToggle");
 const loopImgs = document.querySelectorAll(".loop");
 
+function syncSplitCardDiagonalGap() {
+  const splitCards = document.querySelectorAll(".split-card");
+  if (!splitCards.length) return;
+
+  const rightColumn = document.querySelector(".right-column");
+  const gapPx = rightColumn ? parseFloat(getComputedStyle(rightColumn).gap) : 0;
+  if (!gapPx) return;
+
+  splitCards.forEach(card => {
+    const rect = card.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+
+    const slope = rect.height / rect.width;
+    const diagonalOffsetPx = gapPx * Math.sqrt(1 + slope * slope) / slope;
+    card.style.setProperty("--split-diagonal-offset", `${diagonalOffsetPx}px`);
+  });
+}
+
 const isFunMode = localStorage.getItem('funMode') === 'true';
 document.body.classList.toggle("fun-mode", isFunMode);
 toggleBtn.innerHTML = isFunMode
@@ -80,6 +98,8 @@ document.querySelectorAll('a').forEach(link => {
 });
 
 window.addEventListener("DOMContentLoaded", () => {
+  syncSplitCardDiagonalGap();
+
   setTimeout(() => {
     if (toggleBtn && !document.body.classList.contains("fun-mode")) {
       toggleBtn.classList.add("popout");
@@ -89,3 +109,5 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }, 1000);
 });
+
+window.addEventListener("resize", syncSplitCardDiagonalGap);

@@ -263,6 +263,13 @@ body.fun-mode .text-mask {
   opacity: 0;
 }
 
+.btn4 {
+  background-color: #ffffff;
+  color: #121212;
+  animation: bounceInBottom 0.8s ease 3.5s forwards;
+  opacity: 0;
+}
+
 .loop {
   position: absolute;
   top: 0;
@@ -397,6 +404,58 @@ body:not(.fun-mode) .image-buttons img {
   scale: 1.01;
 }
 
+.split-card {
+  --split-diagonal-offset: 2svh;
+  position: relative;
+  width: 43vw;
+  border-radius: 3vw;
+  overflow: hidden;
+}
+
+.split-tile {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.projects-tile {
+  transform-origin: left bottom;
+  clip-path: polygon(0 0, calc(100% - var(--split-diagonal-offset)) 100%, 0 100%);
+}
+
+.photos-tile {
+  transform-origin: right top;
+  justify-content: flex-end;
+  align-items: flex-start;
+  clip-path: polygon(var(--split-diagonal-offset) 0, 100% 0, 100% 100%);
+}
+
+.split-label {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+  transition: none;
+}
+
+.split-tile .loop {
+  border-radius: 0;
+  object-fit: cover;
+  object-position: center;
+}
+
+.projects-label {
+  align-self: flex-end;
+}
+
+.photos-label {
+  align-self: flex-start;
+}
+
+body.fun-mode .photos-label {
+  color: #ffffff;
+}
+
 body:not(.fun-mode) .button:hover {
   scale: 1.01;
 }
@@ -416,9 +475,15 @@ body.fun-mode .btn3 {
   opacity: 0;
 }
 
+body.fun-mode .btn4 {
+  animation: bounceInBottom 0.8s ease 3.5s forwards;
+  opacity: 0;
+}
+
 body:not(.fun-mode) .btn1,
 body:not(.fun-mode) .btn2,
-body:not(.fun-mode) .btn3 {
+body:not(.fun-mode) .btn3,
+body:not(.fun-mode) .btn4 {
   animation: none !important;
 } 
 
