@@ -4,11 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
   carousels.forEach(carousel => {
     const track = carousel.querySelector('.carousel-track');
     const items = Array.from(track.children);
-    const gap = parseFloat(getComputedStyle(track).gap) || 0;
+    const trackStyle = window.getComputedStyle(track);
+    const gap = parseFloat(trackStyle.gap) || 0;
     
     let singleSetWidth = 0;
     items.forEach(item => {
-      singleSetWidth += item.offsetWidth + gap;
+      const itemStyle = window.getComputedStyle(item);
+      const marginLeft = parseFloat(itemStyle.marginLeft) || 0;
+      const marginRight = parseFloat(itemStyle.marginRight) || 0;
+      singleSetWidth += item.offsetWidth + gap + marginLeft + marginRight;
     });
 
     while (track.children.length < items.length * 4) {
@@ -19,14 +23,35 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    // Force browser to recalculate animation with new cloned width on Desktop
+    track.style.animation = 'none';
+    track.offsetHeight; // trigger reflow
+    track.style.animation = '';
+
+    // Mobile scroll logic: Debounced to let momentum scroll settle before snapping
+    let scrollTimeout;
     carousel.addEventListener('scroll', () => {
-      if (carousel.scrollLeft >= singleSetWidth) {
-        carousel.scrollLeft -= singleSetWidth;
-      } 
-      else if (carousel.scrollLeft <= 0) {
-        carousel.scrollLeft += singleSetWidth;
-      }
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        if (carousel.scrollLeft >= singleSetWidth * 2) {
+          carousel.style.scrollBehavior = 'auto'; 
+          carousel.scrollLeft -= singleSetWidth;
+        } 
+        else if (carousel.scrollLeft < singleSetWidth) {
+          carousel.style.scrollBehavior = 'auto';
+          carousel.scrollLeft += singleSetWidth;
+        }
+      }, 150);
     });
+
+    // Initialize scroll position for mobile so scrolling left is instantly seamless
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice || window.innerWidth <= 768) {
+      setTimeout(() => {
+        carousel.style.scrollBehavior = 'auto';
+        carousel.scrollLeft = singleSetWidth;
+      }, 100);
+    }
   });
 
   function attachListenerToItem(item, track) {
