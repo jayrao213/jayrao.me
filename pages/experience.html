@@ -84,11 +84,12 @@
                 </div>
             </div>
             <div class="card-content">
-                <ul class="experience-list">
-                    <li>Architecting the Historical Outcomes Python backend with a two-stage CatBoost pipeline: a binary model predicting renewable project success (0.80 ROC-AUC) and a multi-class model forecasting MISO queue failure timelines (61% accuracy, 3x baseline predictions)</li>
-                    <li>Built a data-ingestion and project-similarity pipeline across 3000+ solar, wind, and storage records, using SHAP explainers to produce interpretable risk profiles from capacity, topology, and grid-congestion data</li>
-                    <li>Developed a modular social-sentiment scraping system (Reddit, YouTube, Google Places, Change.org) with city/county/state geo resolution, weighted relevance scoring, and rate-limit-resilient transcript retrieval</li>
-                </ul>
+              <ul class="experience-list">
+                <li>Sole engineer on Gridgate Queue Analysis v1.0, a full MISO queue intelligence system spanning a 14-source data lake (13+ custom scrapers), 9-module feature engineering pipeline, and two production CatBoost models trained on 3,000+ historical renewable energy projects</li>
+                <li>Built a two-stage ML pipeline predicting project outcomes: a binary success/withdrawal classifier (ROC-AUC 0.93, 85% hold-out accuracy) and a 5-class withdrawal phase classifier (74% hold-out accuracy, one-vs-rest ROC-AUC 0.94), with SHAP explainability outputs for both</li>
+                <li>Engineered 9 feature modules covering POI geometry, rolling county queue density, FERC developer history, policy regime encoding, geospatial overlays, and financial market context</li>
+                <li>Built a location-aware social sentiment pipeline scraping Reddit, YouTube transcripts, Google Maps reviews, and Change.org petitions with city/county/state geo resolution and weighted relevance scoring</li>
+              </ul>
             </div>
           </div>
         </div>
