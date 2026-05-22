@@ -63,6 +63,8 @@ function animateH1() {
 // Reset Animations
 function resetAnimations() {
   document.querySelectorAll('.left-icons a img, .emoji-toggle').forEach(el => {
+    el.style.transform = '';
+    el.style.opacity = '';
     el.style.animation = 'none';
     void el.offsetHeight;
     el.style.animation = '';
@@ -108,6 +110,17 @@ function setupFunModeToggle() {
   const body = document.body;
 
   if (!toggle) return;
+
+  // After the fun-mode slide-in animation, clear the fill state so
+  // the residual scale(1) transform doesn't cause sub-pixel size
+  // discrepancies on mobile (common in WebKit/Blink composited layers).
+  toggle.addEventListener('animationend', () => {
+    if (body.classList.contains('fun-mode')) {
+      toggle.style.animation = 'none';
+      toggle.style.transform = 'none';
+      toggle.style.opacity = '1';
+    }
+  });
 
   const savedMode = localStorage.getItem('funMode');
   const isFun = savedMode === 'true';

@@ -81,67 +81,59 @@ function buildExplosion(container) {
   });
 }
 
-// ─── DROP + BOUNCE (heavy hard ball) ─────────────────────────────────────────
-// Falls fast. Bounces low (40 → 16 → 5 px), fast, 3 times, then dead-stops.
-// Hard ball barely deforms — very slight squash only.
+// ─── DROP + BOUNCE ────────────────────────────────────────────────────────────
 async function dropAndBounce(profile) {
-  profile.style.transition = 'none';
-  profile.style.opacity    = '0';
-  profile.style.transform  = 'translateY(-300vh) scale(1)';
-  profile.style.visibility = 'visible';
+  profile.style.transition      = 'none';
+  profile.style.opacity         = '0';
+  profile.style.transform       = 'translateY(-300vh)';
+  profile.style.transformOrigin = 'center bottom'; // squash anchors to ground
+  profile.style.visibility      = 'visible';
   void profile.offsetWidth;
 
-  // Hard gravity — accelerates fast, no float
-  const FALL = 'cubic-bezier(0.5, 0, 1, 1)';
-  // Fast launch, decelerates quickly — no hang time
-  const RISE = 'cubic-bezier(0.15, 1, 0.45, 1)';
+  const RISE   = 'cubic-bezier(0.15, 0.85, 0.45, 1)';
+  const FALL   = 'cubic-bezier(0.55, 0, 0.85, 0.2)';
+  // Slight overshoot on recovery → subtle springiness
+  const SPRING = 'cubic-bezier(0.34, 1.4, 0.64, 1)';
 
   // ── Fall from sky ──
   await anim(profile, [
-    { transform: 'translateY(-300vh) scale(1)',              opacity: 0            },
-    { transform: 'translateY(-294vh) scale(1)',              opacity: 1, offset: 0.02 },
-    { transform: 'translateY(0)',  opacity: 1            },
-  ], { duration: 500, easing: FALL });
+    { transform: 'translateY(-300vh)', opacity: 0               },
+    { transform: 'translateY(-294vh)', opacity: 1, offset: 0.02 },
+    { transform: 'translateY(0)',      opacity: 1               },
+  ], { duration: 520, easing: 'cubic-bezier(0.5, 0, 1, 1)' });
 
-  // ── Bounce 1: snap to normal, rise 40px, fall back ──
+  // ── Bounce 1: 48px, 6% squash on landing ──
   await anim(profile, [
-    { transform: 'translateY(0)' },
-    { transform: 'translateY(0) scale(1)',                   offset: 0.07         },
-    { transform: 'translateY(-40px) scale(1)'                                     },
-  ], { duration: 95, easing: RISE });
+    { transform: 'translateY(0) scale(1)' },
+    { transform: 'translateY(-48px) scale(1)' },
+  ], { duration: 145, easing: RISE });
+  await anim(profile, [
+    { transform: 'translateY(-48px) scale(1)' },
+    { transform: 'translateY(0) scaleX(1.06) scaleY(0.94)' },
+  ], { duration: 170, easing: FALL });
+  await anim(profile, [
+    { transform: 'translateY(0) scaleX(1.06) scaleY(0.94)' },
+    { transform: 'translateY(0) scale(1)' },
+  ], { duration: 60, easing: SPRING });
 
+  // ── Bounce 2: 20px, 4% squash, settles ──
   await anim(profile, [
-    { transform: 'translateY(-40px) scale(1)'             },
-    { transform: 'translateY(0)'},
+    { transform: 'translateY(0) scale(1)' },
+    { transform: 'translateY(-20px) scale(1)' },
+  ], { duration: 105, easing: RISE });
+  await anim(profile, [
+    { transform: 'translateY(-20px) scale(1)' },
+    { transform: 'translateY(0) scaleX(1.04) scaleY(0.96)' },
   ], { duration: 130, easing: FALL });
-
-  // ── Bounce 2: rise 16px, fall back ──
   await anim(profile, [
-    { transform: 'translateY(0)' },
-    { transform: 'translateY(0) scale(1)',                    offset: 0.06        },
-    { transform: 'translateY(-16px) scale(1)'                                     },
-  ], { duration: 75, easing: RISE });
+    { transform: 'translateY(0) scaleX(1.04) scaleY(0.96)' },
+    { transform: 'translateY(0) scale(1)' },
+  ], { duration: 50, easing: SPRING });
 
-  await anim(profile, [
-    { transform: 'translateY(-16px) scale(1)'             },
-    { transform: 'translateY(0)'},
-  ], { duration: 95, easing: FALL });
-
-  // ── Bounce 3: tiny 5px, settles ──
-  await anim(profile, [
-    { transform: 'translateY(0)' },
-    { transform: 'translateY(0) scale(1)',                    offset: 0.05        },
-    { transform: 'translateY(-5px) scale(1)'                                      },
-  ], { duration: 50, easing: RISE });
-
-  await anim(profile, [
-    { transform: 'translateY(-5px) scale(1)' },
-    { transform: 'translateY(0) scale(1)'    },
-  ], { duration: 65, easing: FALL });
-
-  profile.style.opacity    = '1';
-  profile.style.transform  = '';
-  profile.style.transition = '';
+  profile.style.opacity         = '1';
+  profile.style.transform       = '';
+  profile.style.transformOrigin = '';
+  profile.style.transition      = '';
 }
 
 // ─── MAIN SEQUENCE ────────────────────────────────────────────────────────────
