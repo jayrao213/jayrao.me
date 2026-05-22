@@ -23,7 +23,7 @@
   <link rel="preload" href="../images/github.png" as="image">
   <link rel="preload" href="../images/resume.png" as="image">
   <link rel="preload" href="../images/email.png" as="image">
-  <link rel="preload" href="../images/jayrao.jpeg" as="image">
+  <link rel="preload" href="../images/jayrao.webp" as="image" fetchpriority="high">
   
   <link rel="icon" type="image/png" href="../images/favicon.png">
   <link rel="stylesheet" href="../styles/shared.css" />
@@ -39,11 +39,11 @@
           </div>
       
           <div class="left-icons">
-            <a href="http://linkedin.com/in/jay-rao213" target="_blank"><img src="../images/linkedin.png" alt="LinkedIn" loading="lazy" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>
-            <a href="https://github.com/jayrao213" target="_blank"><img src="../images/github.png" alt="GitHub" loading="lazy" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>  
+            <a href="http://linkedin.com/in/jay-rao213" target="_blank"><img src="../images/linkedin.png" alt="LinkedIn" decoding="async" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>
+            <a href="https://github.com/jayrao213" target="_blank"><img src="../images/github.png" alt="GitHub" decoding="async" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>
             <a id="funToggle" title="Toggle Fun Mode" class="emoji-toggle">😈</a>
-            <a href="../pdfs/Jay_Rao_Resume.pdf" target="_blank"><img src="../images/resume.png" alt="Resume" loading="lazy" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>
-            <a href="mailto:jayrao@u.northwestern.edu" target="_blank"><img src="../images/email.png" alt="Email" loading="lazy" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>
+            <a href="../pdfs/Jay_Rao_Resume.pdf" target="_blank"><img src="../images/resume.png" alt="Resume" decoding="async" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>
+            <a href="mailto:jayrao@u.northwestern.edu" target="_blank"><img src="../images/email.png" alt="Email" decoding="async" onerror="this.onerror=null; this.src='../images/fallback.png';"></a>
           </div>
 
           <a href="../index.html" class="home-button">Home</a>
@@ -66,7 +66,7 @@
         <h1>About Me</h1>
 
         <div class="profile-wrapper">
-          <img src="../images/jayrao.jpeg" alt="Jay Rao" class="profile-pic" id="jayProfile">
+          <img src="../images/jayrao.webp" alt="Jay Rao" class="profile-pic" id="jayProfile" fetchpriority="high" decoding="async">
           <div class="explosion-container" id="explosionContainer"></div>
         </div>
 

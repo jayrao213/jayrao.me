@@ -8,22 +8,22 @@ const STORAGE_KEY = 'jayrao.photos.order';
 const TILTS = [-3.5, 2.8, -2.2, 4.2, -4, 3.2, -2.8, 3.8, -3, 2.2, -4.2, 2.5];
 
 const DEFAULT_PHOTOS = [
-  { id: 'p1', src: '../images/moonlit_trees.jpeg', alt: 'Moonlit trees on the Northwestern Lakefill' },
-  { id: 'p2', src: '../images/telescope.jpeg', alt: 'Deaborn Observatory telescope' },
-  { id: 'p3', src: '../images/nyc.jpeg', alt: 'Steinway Tower at sunset in NYC' },
-  { id: 'p4', src: '../images/plane_sunset.jpeg', alt: 'Clouds over Lake Michigan from 30,000ft above' },
-  { id: 'p5', src: '../images/squirrel.jpeg', alt: 'Curious squirrel sitting on a tree' },
-  { id: 'p16', src: '../images/deering_day.jpeg', alt: 'Deering Library on a bright day' },
-  { id: 'p7', src: '../images/spac.jpeg', alt: 'Moonlight beaming through the clouds on SPAC' },
-  { id: 'p13', src: '../images/lightning.jpeg', alt: 'Lightning over two ducks at night' },
-  { id: 'p8', src: '../images/flowers.jpg', alt: 'Bright colored flowers in the spring' },
-  { id: 'p9', src: '../images/bienen.jpeg', alt: 'Ryan Center at night' },
-  { id: 'p14', src: '../images/music_admin_building.jpeg', alt: 'Music Administration Building on campus' },
-  { id: 'p15', src: '../images/lake_michigan_sunrise.jpeg', alt: 'Sunrise over Lake Michigan' },
-  { id: 'p10', src: '../images/atrium.jpg', alt: 'Atrium of Northwestern University\'s Technological Institute' },
-  { id: 'p11', src: '../images/norris.jpeg', alt: 'Norris University Center sitting next to the iced out lakefill' },
-  { id: 'p12', src: '../images/arches.jpeg', alt: 'Spooky arches on campus at midnight' },
-  { id: 'p6', src: '../images/deering.jpeg', alt: 'Deering Library at night' }
+  { id: 'p1',  thumb: '../images/moonlit_trees_thumb.webp',        src: '../images/moonlit_trees.webp',        alt: 'Moonlit trees on the Northwestern Lakefill' },
+  { id: 'p2',  thumb: '../images/telescope_thumb.webp',            src: '../images/telescope.webp',            alt: 'Deaborn Observatory telescope' },
+  { id: 'p3',  thumb: '../images/nyc_thumb.webp',                  src: '../images/nyc.webp',                  alt: 'Steinway Tower at sunset in NYC' },
+  { id: 'p4',  thumb: '../images/plane_sunset_thumb.webp',         src: '../images/plane_sunset.webp',         alt: 'Clouds over Lake Michigan from 30,000ft above' },
+  { id: 'p5',  thumb: '../images/squirrel_thumb.webp',             src: '../images/squirrel.webp',             alt: 'Curious squirrel sitting on a tree' },
+  { id: 'p16', thumb: '../images/deering_day_thumb.webp',          src: '../images/deering_day.webp',          alt: 'Deering Library on a bright day' },
+  { id: 'p7',  thumb: '../images/spac_thumb.webp',                 src: '../images/spac.webp',                 alt: 'Moonlight beaming through the clouds on SPAC' },
+  { id: 'p13', thumb: '../images/lightning_thumb.webp',            src: '../images/lightning.webp',            alt: 'Lightning over two ducks at night' },
+  { id: 'p8',  thumb: '../images/flowers_thumb.webp',              src: '../images/flowers.webp',              alt: 'Bright colored flowers in the spring' },
+  { id: 'p9',  thumb: '../images/bienen_thumb.webp',               src: '../images/bienen.webp',               alt: 'Ryan Center at night' },
+  { id: 'p14', thumb: '../images/music_admin_building_thumb.webp', src: '../images/music_admin_building.webp', alt: 'Music Administration Building on campus' },
+  { id: 'p15', thumb: '../images/lake_michigan_sunrise_thumb.webp',src: '../images/lake_michigan_sunrise.webp',alt: 'Sunrise over Lake Michigan' },
+  { id: 'p10', thumb: '../images/atrium_thumb.webp',               src: '../images/atrium.webp',               alt: 'Atrium of Northwestern University\'s Technological Institute' },
+  { id: 'p11', thumb: '../images/norris_thumb.webp',               src: '../images/norris.webp',               alt: 'Norris University Center sitting next to the iced out lakefill' },
+  { id: 'p12', thumb: '../images/arches_thumb.webp',               src: '../images/arches.webp',               alt: 'Spooky arches on campus at midnight' },
+  { id: 'p6',  thumb: '../images/deering_thumb.webp',              src: '../images/deering.webp',              alt: 'Deering Library at night' }
 ];
 
 let currentOrderIds = [];
@@ -93,15 +93,17 @@ function buildHang(photo, tiltIndex) {
   const wrap = document.createElement('div');
   wrap.className = 'clothesline-hang';
   wrap.dataset.photoId = photo.id;
+  wrap.dataset.fullSrc = photo.src;
   wrap.style.setProperty('--tilt', tiltForIndex(tiltIndex));
 
   const frame = document.createElement('div');
   frame.className = 'clothesline-frame';
 
   const img = document.createElement('img');
-  img.src = photo.src;
+  img.src = photo.thumb;
   img.alt = photo.alt;
   img.loading = 'lazy';
+  img.decoding = 'async';
   img.draggable = false;
 
   frame.appendChild(img);
@@ -196,83 +198,154 @@ function computeInsertIndex(clientX, clientY, draggedEl) {
   return insertLeft ? idx : idx + 1;
 }
 
-function applyDragTransform(el, dx, dy) {
-  const tilt = getComputedStyle(el).getPropertyValue('--tilt').trim() || '0deg';
-  el.style.transform = `translate(${dx}px, ${dy}px) rotate(${tilt})`;
+let ghostEl          = null;
+let previewOrderIds  = null;
+let renderScheduled  = false;
+
+// Re-render using previewOrderIds, keeping the dragged photo invisible as a placeholder
+function schedulePreviewRender() {
+  if (renderScheduled) return;
+  renderScheduled = true;
+  requestAnimationFrame(() => {
+    renderScheduled = false;
+    if (!dragState || !previewOrderIds) return;
+
+    const map          = photosByIdMap();
+    const cols         = getCols();
+    const ordered      = previewOrderIds.map(id => map.get(id)).filter(Boolean);
+    const rows         = chunk(ordered.map(p => p.id), cols);
+    const hiddenId     = dragState.photoId;
+
+    rootEl.innerHTML = '';
+    let tiltIndex = 0;
+    rows.forEach(rowIds => {
+      const section = document.createElement('section');
+      section.className = 'clothesline-row';
+      const line = document.createElement('div');
+      line.className = 'clothesline-line';
+      line.setAttribute('aria-hidden', 'true');
+      const track = document.createElement('div');
+      track.className = 'clothesline-track';
+      rowIds.forEach(id => {
+        const photo = map.get(id);
+        if (!photo) return;
+        const hang = buildHang(photo, tiltIndex++);
+        if (id === hiddenId) hang.style.visibility = 'hidden';
+        track.appendChild(hang);
+      });
+      section.appendChild(line);
+      section.appendChild(track);
+      rootEl.appendChild(section);
+    });
+  });
 }
 
-function clearDragTransform(el) {
-  el.style.transform = '';
+// Find the flat insertion index by querying visible hang positions
+function computeDropIndex(clientX, clientY, draggedId) {
+  let best = null, bestD = Infinity;
+  rootEl.querySelectorAll('.clothesline-hang').forEach(h => {
+    if (h.style.visibility === 'hidden') return; // skip placeholder
+    const r = h.getBoundingClientRect();
+    if (!r.width) return;
+    const d = (r.left + r.width / 2 - clientX) ** 2 + (r.top + r.height / 2 - clientY) ** 2;
+    if (d < bestD) { bestD = d; best = h; }
+  });
+  if (!best) return previewOrderIds.indexOf(draggedId);
+
+  const r      = best.getBoundingClientRect();
+  const before = clientX < r.left + r.width / 2;
+  const without = previewOrderIds.filter(id => id !== draggedId);
+  const idx    = without.indexOf(best.dataset.photoId);
+  return idx === -1 ? without.length : (before ? idx : idx + 1);
 }
 
 function onPointerDown(e) {
   const hang = e.target.closest('.clothesline-hang');
   if (!hang || !rootEl.contains(hang)) return;
-
   if (e.button !== 0) return;
-
   e.preventDefault();
-  hang.setPointerCapture(e.pointerId);
+
+  const rect    = hang.getBoundingClientRect();
+  const offsetX = e.clientX - rect.left;
+  const offsetY = e.clientY - rect.top;
+  const tilt    = hang.style.getPropertyValue('--tilt') || '0deg';
+
+  ghostEl = hang.cloneNode(true);
+  Object.assign(ghostEl.style, {
+    position:        'fixed',
+    width:           rect.width  + 'px',
+    height:          rect.height + 'px',
+    left:            rect.left   + 'px',
+    top:             rect.top    + 'px',
+    zIndex:          '99999',
+    pointerEvents:   'none',
+    opacity:         '0.9',
+    filter:          'drop-shadow(0 14px 28px rgba(0,0,0,0.5))',
+    transform:       `rotate(${tilt})`,
+    transformOrigin: '50% 0%',
+    transition:      'none',
+    margin:          '0',
+  });
+  document.body.appendChild(ghostEl);
+
+  previewOrderIds = [...currentOrderIds];
 
   dragState = {
-    el: hang,
-    pointerId: e.pointerId,
-    originX: e.clientX,
-    originY: e.clientY,
-    dx: 0,
-    dy: 0
+    photoId:       hang.dataset.photoId,
+    pointerId:     e.pointerId,
+    offsetX,
+    offsetY,
+    startX:        e.clientX,
+    startY:        e.clientY,
+    lastDropIndex: -1,
   };
 
-  hang.classList.add('dragging');
-  window.addEventListener('pointermove', onPointerMove);
-  window.addEventListener('pointerup', onPointerUpWindow);
+  hang.style.visibility = 'hidden'; // turn source into invisible placeholder
+
+  window.addEventListener('pointermove',   onPointerMove);
+  window.addEventListener('pointerup',     onPointerUpWindow);
   window.addEventListener('pointercancel', onPointerUpWindow);
 }
 
 function onPointerMove(e) {
   if (!dragState || e.pointerId !== dragState.pointerId) return;
 
-  dragState.dx = e.clientX - dragState.originX;
-  dragState.dy = e.clientY - dragState.originY;
-  applyDragTransform(dragState.el, dragState.dx, dragState.dy);
+  ghostEl.style.left = (e.clientX - dragState.offsetX) + 'px';
+  ghostEl.style.top  = (e.clientY - dragState.offsetY) + 'px';
+
+  const dropIndex = computeDropIndex(e.clientX, e.clientY, dragState.photoId);
+  if (dropIndex === dragState.lastDropIndex) return;
+  dragState.lastDropIndex = dropIndex;
+
+  const without   = previewOrderIds.filter(id => id !== dragState.photoId);
+  const clamped   = Math.max(0, Math.min(dropIndex, without.length));
+  previewOrderIds = [...without.slice(0, clamped), dragState.photoId, ...without.slice(clamped)];
+  schedulePreviewRender();
 }
 
 function onPointerUpWindow(e) {
   if (!dragState || e.pointerId !== dragState.pointerId) return;
 
-  const { el, dx, dy, pointerId } = dragState;
-  dragState = null;
+  const { photoId, startX, startY } = dragState;
+  dragState       = null;
+  renderScheduled = false;
 
-  window.removeEventListener('pointermove', onPointerMove);
-  window.removeEventListener('pointerup', onPointerUpWindow);
+  window.removeEventListener('pointermove',   onPointerMove);
+  window.removeEventListener('pointerup',     onPointerUpWindow);
   window.removeEventListener('pointercancel', onPointerUpWindow);
 
-  try {
-    el.releasePointerCapture(pointerId);
-  } catch {
-    /* ignore */
-  }
+  if (ghostEl) { ghostEl.remove(); ghostEl = null; }
 
-  el.classList.remove('dragging');
-  clearDragTransform(el);
-
-  const moved = Math.abs(dx) > 4 || Math.abs(dy) > 4;
+  const moved = Math.abs(e.clientX - startX) > 4 || Math.abs(e.clientY - startY) > 4;
   if (!moved) {
-    openLightbox(el);
+    previewOrderIds = null;
+    const hang = rootEl.querySelector(`[data-photo-id="${photoId}"]`);
+    if (hang) { hang.style.visibility = ''; openLightbox(hang); }
     return;
   }
 
-  const before = readFlatOrderFromDom();
-  const insertIndex = computeInsertIndex(e.clientX, e.clientY, el);
-  const draggedId = el.dataset.photoId;
-  const without = before.filter((id) => id !== draggedId);
-
-  const clamped = Math.max(0, Math.min(insertIndex, without.length));
-  const newOrder = [...without.slice(0, clamped), draggedId, ...without.slice(clamped)];
-
-  if (newOrder.join() === before.join()) return;
-
-  currentOrderIds = newOrder;
+  currentOrderIds = previewOrderIds;
+  previewOrderIds = null;
   saveOrder(currentOrderIds);
   render();
 }
@@ -290,8 +363,9 @@ function openLightbox(hangEl) {
 
   const imgEl = hangEl.querySelector('img');
   if (!imgEl) return;
-  
-  lbImg.src = imgEl.src;
+
+  const fullSrc = hangEl.dataset.fullSrc || imgEl.src;
+  lbImg.src = fullSrc;
   lbCap.textContent = imgEl.alt;
 
   lightbox.classList.add('active');

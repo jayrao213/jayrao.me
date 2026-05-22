@@ -21,6 +21,9 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100svh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 @keyframes showTopText {
@@ -69,23 +72,23 @@ body {
 }
 
 .animated-title > .text-top div {
-  animation: showTopText 1s ease forwards;
-  animation-delay: 0.4s;
+  animation: showTopText 0.65s ease-out forwards;
+  animation-delay: 0.25s;
   transform: translateY(100%);
   position: relative;
 }
 
 .animated-title > .text-top div span:first-child {
-  color: #f8f8f8;
+  color: #ffffff;
 }
 
 .animated-title > .text-top div span:nth-child(2) {
-  color: #d9d9d9;
+  color: #e0e0e0;
 }
 
 .animated-title > .text-bottom div {
-  animation: showBottomText 0.5s ease forwards;
-  animation-delay: 1.5s;
+  animation: showBottomText 0.35s ease-out forwards;
+  animation-delay: 1.0s;
   top: 0;
   transform: translateY(-100%);
   position: relative;
@@ -129,30 +132,30 @@ body {
 
 .image-buttons .icon-wrapper:nth-child(1) img {
   animation:
-    fromLeft 0.6s ease 2s forwards,
-    spinCCW 1.2s ease 2.6s forwards,
-    bounceTwice 0.6s ease 3.8s forwards;
+    fromLeft 0.4s cubic-bezier(0.22, 1, 0.36, 1) 1.35s forwards,
+    spinCCW 0.8s cubic-bezier(0.4, 0, 0.2, 1) 1.75s forwards,
+    bounceTwice 0.4s ease 2.55s forwards;
 }
 
 .image-buttons .icon-wrapper:nth-child(2) img {
   animation:
-    fromBottom 0.6s ease 2s forwards,
-    spinCCW 1.2s ease 2.6s forwards,
-    bounceTwice 0.6s ease 3.8s forwards;
+    fromBottom 0.4s cubic-bezier(0.22, 1, 0.36, 1) 1.35s forwards,
+    spinCCW 0.8s cubic-bezier(0.4, 0, 0.2, 1) 1.75s forwards,
+    bounceTwice 0.4s ease 2.55s forwards;
 }
 
 .image-buttons .icon-wrapper:nth-child(3) img {
   animation:
-    fromTop 0.6s ease 2s forwards,
-    spinCW 1.2s ease 2.6s forwards,
-    bounceTwice 0.6s ease 3.8s forwards;
+    fromTop 0.4s cubic-bezier(0.22, 1, 0.36, 1) 1.35s forwards,
+    spinCW 0.8s cubic-bezier(0.4, 0, 0.2, 1) 1.75s forwards,
+    bounceTwice 0.4s ease 2.55s forwards;
 }
 
 .image-buttons .icon-wrapper:nth-child(4) img {
   animation:
-    fromRight 0.6s ease 2s forwards,
-    spinCW 1.2s ease 2.6s forwards,
-    bounceTwice 0.6s ease 3.8s forwards;
+    fromRight 0.4s cubic-bezier(0.22, 1, 0.36, 1) 1.35s forwards,
+    spinCW 0.8s cubic-bezier(0.4, 0, 0.2, 1) 1.75s forwards,
+    bounceTwice 0.4s ease 2.55s forwards;
 }
 
 @keyframes fromLeft {
@@ -247,26 +250,26 @@ body.fun-mode .text-mask {
   height: 27svh; 
 }
 
-.btn1 { background-color: #1c1c1c; 
-  animation: bounceInLeft 0.8s ease 3.5s forwards;
+.btn1 { background-color: #1c1c1c;
+  animation: bounceInLeft 0.55s ease 2.35s forwards;
   opacity: 0;
-} 
+}
 
-.btn2 { background-color: #ffffff; 
+.btn2 { background-color: #ffffff;
   color:#121212;
-  animation: bounceInRight 0.8s ease 3.5s forwards;
+  animation: bounceInRight 0.55s ease 2.35s forwards;
   opacity: 0;
-} 
+}
 
 .btn3 { background-color: #1c1c1c;
-  animation: bounceInBottom 0.8s ease 3.5s forwards;
+  animation: bounceInBottom 0.55s ease 2.35s forwards;
   opacity: 0;
 }
 
 .btn4 {
   background-color: #ffffff;
   color: #121212;
-  animation: bounceInBottom 0.8s ease 3.5s forwards;
+  animation: bounceInBottom 0.55s ease 2.35s forwards;
   opacity: 0;
 }
 
@@ -329,8 +332,8 @@ body.fun-mode #modeToggle.show {
 
 body.fun-mode #modeToggle .mode-text {
   opacity: 0;
-  animation: bounceInTop 0.6s ease forwards;
-  animation-delay: 4s; 
+  animation: bounceInTop 0.4s ease forwards;
+  animation-delay: 2.7s;
   display: inline-block;
 }
 
@@ -382,18 +385,18 @@ body:not(.fun-mode) .image-buttons img {
 .button {
   position: relative;
   z-index: 1;
-  width: 43vw; 
-  border-radius: 3vw; 
-  font-size: 4svh; 
+  width: 43vw;
+  border-radius: 3vw;
+  font-size: 4svh;
   font-weight: bold;
   text-decoration: none;
   color: #ffffff;
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
-  padding: 3svh; 
+  padding: 3svh;
   text-align: left;
-  transition: transform 0.15s, scale 0.2s ease;
+  transition: scale 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   opacity: 1;
   animation: none;
@@ -401,7 +404,8 @@ body:not(.fun-mode) .image-buttons img {
 }
 
 .button:hover {
-  scale: 1.01;
+  scale: 1.015;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 .split-card {
@@ -461,22 +465,22 @@ body:not(.fun-mode) .button:hover {
 }
 
 body.fun-mode .btn1 {
-  animation: bounceInLeft 0.8s ease 3.5s forwards;
+  animation: bounceInLeft 0.55s ease 2.35s forwards;
   opacity: 0;
 }
 
 body.fun-mode .btn2 {
-  animation: bounceInRight 0.8s ease 3.5s forwards;
+  animation: bounceInRight 0.55s ease 2.35s forwards;
   opacity: 0;
 }
 
 body.fun-mode .btn3 {
-  animation: bounceInBottom 0.8s ease 3.5s forwards;
+  animation: bounceInBottom 0.55s ease 2.35s forwards;
   opacity: 0;
 }
 
 body.fun-mode .btn4 {
-  animation: bounceInBottom 0.8s ease 3.5s forwards;
+  animation: bounceInBottom 0.55s ease 2.35s forwards;
   opacity: 0;
 }
 
@@ -533,8 +537,19 @@ body:not(.fun-mode) .btn4 {
     align-items: flex-start;
     text-align: left;
   }
-  
+
   .animated-title > div div {
     text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-title > .text-top div,
+  .animated-title > .text-bottom div,
+  .image-buttons img,
+  .btn1, .btn2, .btn3, .btn4 {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

@@ -10,6 +10,9 @@ body {
   background-color: #121212;
   color: #ffffff;
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* ====================================== */
@@ -351,17 +354,17 @@ footer {
 
 section.card {
   background-color: #1c1c1c;
-  border: 0.0625rem solid #333;
+  border: 1px solid #2a2a2a;
   border-radius: 0.75rem;
   padding: 1rem 2rem;
   margin-top: 2.5rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(255, 255, 255, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 section.card:hover {
-  transform: translateY(-0.3125rem);
-  box-shadow: 0 0.5rem 1rem rgba(255, 255, 255, 0.1);
+  transform: translateY(-0.25rem);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), 0 12px 28px rgba(0, 0, 0, 0.4);
 }
 
 .badge {
@@ -471,5 +474,23 @@ section.card:hover {
 
   main {
     padding-top: 5rem;
+  }
+}
+
+/* ====================================== */
+/* REDUCED MOTION                         */
+/* ====================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 }

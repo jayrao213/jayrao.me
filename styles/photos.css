@@ -34,6 +34,7 @@
 .clothesline-row {
   position: relative;
   padding-top: 0.35rem;
+  overflow: visible;
 }
 
 .clothesline-line {
@@ -111,29 +112,19 @@
   cursor: grabbing;
 }
 
-.clothesline-hang.dragging {
-  cursor: grabbing;
-  z-index: 2000;
-  transition: none;
-  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.45));
-}
-
-.clothesline-hang.dragging::before,
-.clothesline-hang.dragging::after {
-  opacity: 0.35;
-}
 
 .clothesline-frame {
   position: relative;
   aspect-ratio: 4 / 3;
   background: #f5f5f0;
-  border: 0.35rem solid #f5f5f0;
+  border: 0.35rem solid #f0f0eb;
   padding: 0;
   box-sizing: border-box;
   border-radius: 2px;
   box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.25),
-    0 8px 20px rgba(0, 0, 0, 0.2);
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 4px 10px rgba(0, 0, 0, 0.25),
+    0 12px 28px rgba(0, 0, 0, 0.2);
   overflow: hidden;
 }
 

@@ -2,103 +2,198 @@
 /* ABOUT PAGE SPECIFIC JAVASCRIPT         */
 /* ====================================== */
 
-// Profile Picture Explosion Animation
+function anim(el, keyframes, options) {
+  return new Promise(resolve => {
+    const a = el.animate(keyframes, { fill: 'forwards', ...options });
+    a.onfinish = resolve;
+  });
+}
+
+// ─── SHARD GENERATOR ──────────────────────────────────────────────────────────
+// 12×12 grid = 144 shards, each a random irregular polygon clipped from the image
+function generateShards() {
+  const ROWS = 12, COLS = 12;
+  const cellW = 100 / COLS;
+  const cellH = 100 / ROWS;
+  const shards = [];
+
+  for (let gy = 0; gy < ROWS; gy++) {
+    for (let gx = 0; gx < COLS; gx++) {
+      // Center roams anywhere across the full cell — breaks up grid regularity
+      const cx = gx * cellW + cellW * Math.random();
+      const cy = gy * cellH + cellH * Math.random();
+
+      const numVerts = 4 + Math.floor(Math.random() * 5); // 4–8 — more variety
+      const rx = cellW * (0.4 + Math.random() * 0.95);    // much wider size range
+      const ry = cellH * (0.4 + Math.random() * 0.95);
+
+      const verts = [];
+      for (let i = 0; i < numVerts; i++) {
+        const base   = (i / numVerts) * Math.PI * 2;
+        const jitter = (Math.random() - 0.5) * (Math.PI * 2 / numVerts) * 0.72; // more angular chaos
+        const r      = 0.38 + Math.random() * 0.78;
+        const px     = cx + Math.cos(base + jitter) * rx * r;
+        const py     = cy + Math.sin(base + jitter) * ry * r;
+        verts.push(`${Math.max(-6, Math.min(106, px)).toFixed(1)}% ${Math.max(-6, Math.min(106, py)).toFixed(1)}%`);
+      }
+
+      shards.push({ cx, cy, clipPath: `polygon(${verts.join(', ')})` });
+    }
+  }
+  return shards;
+}
+
+// ─── EXPLOSION ────────────────────────────────────────────────────────────────
+function buildExplosion(container) {
+  const shards = generateShards();
+
+  shards.forEach(({ cx, cy, clipPath }) => {
+    const p = document.createElement('div');
+    p.className = 'particle';
+
+    p.style.width              = '100%';
+    p.style.height             = '100%';
+    p.style.left               = '0';
+    p.style.top                = '0';
+    p.style.backgroundSize     = '100% 100%';
+    p.style.backgroundPosition = '0 0';
+    p.style.clipPath           = clipPath;
+
+    // Radially outward from centre (50%, 50%)
+    const dx    = cx - 50;
+    const dy    = cy - 50;
+    const dist  = Math.sqrt(dx * dx + dy * dy) || 1;
+    const angle = Math.atan2(dy, dx) + (Math.random() - 0.5) * 0.55;
+    const speed = 90 + dist * 2.8 + Math.random() * 80;
+    const tx    = Math.cos(angle) * speed;
+    const ty    = Math.sin(angle) * speed;
+    const rot   = (Math.random() - 0.5) * 70;
+    const delay = dist * 1.2 + Math.random() * 30;
+    const dur   = 480 + Math.random() * 160;
+
+    p.animate([
+      { transform: 'translate(0,0) rotate(0deg)',                                  opacity: 1, offset: 0    },
+      { transform: `translate(${tx*.5}px,${ty*.5}px) rotate(${rot*.45}deg)`,      opacity: 1, offset: 0.35 },
+      { transform: `translate(${tx}px,${ty}px) rotate(${rot}deg)`,                opacity: 0, offset: 1    },
+    ], { duration: dur, delay, easing: 'cubic-bezier(0.15, 0, 0.45, 1)', fill: 'forwards' });
+
+    container.appendChild(p);
+  });
+}
+
+// ─── DROP + BOUNCE (heavy hard ball) ─────────────────────────────────────────
+// Falls fast. Bounces low (40 → 16 → 5 px), fast, 3 times, then dead-stops.
+// Hard ball barely deforms — very slight squash only.
+async function dropAndBounce(profile) {
+  profile.style.transition = 'none';
+  profile.style.opacity    = '0';
+  profile.style.transform  = 'translateY(-300vh) scale(1)';
+  profile.style.visibility = 'visible';
+  void profile.offsetWidth;
+
+  // Hard gravity — accelerates fast, no float
+  const FALL = 'cubic-bezier(0.5, 0, 1, 1)';
+  // Fast launch, decelerates quickly — no hang time
+  const RISE = 'cubic-bezier(0.15, 1, 0.45, 1)';
+
+  // ── Fall from sky ──
+  await anim(profile, [
+    { transform: 'translateY(-300vh) scale(1)',              opacity: 0            },
+    { transform: 'translateY(-294vh) scale(1)',              opacity: 1, offset: 0.02 },
+    { transform: 'translateY(0)',  opacity: 1            },
+  ], { duration: 500, easing: FALL });
+
+  // ── Bounce 1: snap to normal, rise 40px, fall back ──
+  await anim(profile, [
+    { transform: 'translateY(0)' },
+    { transform: 'translateY(0) scale(1)',                   offset: 0.07         },
+    { transform: 'translateY(-40px) scale(1)'                                     },
+  ], { duration: 95, easing: RISE });
+
+  await anim(profile, [
+    { transform: 'translateY(-40px) scale(1)'             },
+    { transform: 'translateY(0)'},
+  ], { duration: 130, easing: FALL });
+
+  // ── Bounce 2: rise 16px, fall back ──
+  await anim(profile, [
+    { transform: 'translateY(0)' },
+    { transform: 'translateY(0) scale(1)',                    offset: 0.06        },
+    { transform: 'translateY(-16px) scale(1)'                                     },
+  ], { duration: 75, easing: RISE });
+
+  await anim(profile, [
+    { transform: 'translateY(-16px) scale(1)'             },
+    { transform: 'translateY(0)'},
+  ], { duration: 95, easing: FALL });
+
+  // ── Bounce 3: tiny 5px, settles ──
+  await anim(profile, [
+    { transform: 'translateY(0)' },
+    { transform: 'translateY(0) scale(1)',                    offset: 0.05        },
+    { transform: 'translateY(-5px) scale(1)'                                      },
+  ], { duration: 50, easing: RISE });
+
+  await anim(profile, [
+    { transform: 'translateY(-5px) scale(1)' },
+    { transform: 'translateY(0) scale(1)'    },
+  ], { duration: 65, easing: FALL });
+
+  profile.style.opacity    = '1';
+  profile.style.transform  = '';
+  profile.style.transition = '';
+}
+
+// ─── MAIN SEQUENCE ────────────────────────────────────────────────────────────
 function explodeAndReassembleProfile() {
   const container = document.getElementById('explosionContainer');
-  const profile = document.getElementById('jayProfile');
+  const profile   = document.getElementById('jayProfile');
   if (!container || !profile) return;
 
-  profile.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
-  profile.style.transform = 'scale(0.1)';
-  profile.style.opacity = '0';
+  profile.style.transition = 'none';
 
-  setTimeout(() => {
-    const rows = 20, cols = 20;
-    const tileWidth = 100 / cols;
-    const tileHeight = 100 / rows;
+  const shudder = profile.animate([
+    { transform: 'translate(0,0) rotate(0deg) scale(1)'           },
+    { transform: 'translate(-4px,-2px) rotate(-1deg) scale(1.02)' },
+    { transform: 'translate(5px, 2px) rotate(1deg)  scale(0.98)'  },
+    { transform: 'translate(-3px, 3px) rotate(-1deg) scale(1.01)' },
+    { transform: 'translate(4px,-3px) rotate(0.5deg) scale(1)'    },
+    { transform: 'translate(0,0) rotate(0deg) scale(1)'           },
+  ], { duration: 260, easing: 'ease-in-out', fill: 'forwards' });
 
-    container.innerHTML = '';
-    container.style.display = 'block';
-    profile.style.visibility = 'hidden';
+  shudder.onfinish = () => {
+    profile.animate([
+      { transform: 'scale(1)',     opacity: 1              },
+      { transform: 'scale(1.07)', opacity: 1, offset: 0.3 },
+      { transform: 'scale(0)',    opacity: 0               },
+    ], { duration: 190, easing: 'ease-in', fill: 'forwards' }).onfinish = () => {
+      profile.style.visibility = 'hidden';
 
-    for (let y = 0; y < rows; y++) {
-      for (let x = 0; x < cols; x++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
+      container.innerHTML      = '';
+      container.style.clipPath = 'circle(50% at 50% 50%)';
+      container.style.display  = 'block';
+      buildExplosion(container);
 
-        const randomX = Math.random() * 100;
-        const randomY = Math.random() * 100;
-        particle.style.left = `${randomX}%`;
-        particle.style.top = `${randomY}%`;
-        particle.style.backgroundPosition = `${-x * tileWidth}% ${-y * tileHeight}%`;
+      // One frame later: remove the clip so particles can fly outside the circle
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        container.style.clipPath = '';
+      }));
 
-        const angle = Math.random() * 2 * Math.PI;
-        const radius = Math.random() * 300 + 150;
-        const dx = Math.cos(angle) * radius;
-        const dy = Math.sin(angle) * radius;
-        const rotate = Math.random() * 1440 - 720;
-        const delay = Math.random() * 200;
-
-        particle.animate([
-          { transform: 'translate(0px, 0px) rotate(0deg)', opacity: 0 },
-          { transform: `translate(${dx}px, ${dy}px) rotate(${rotate}deg)`, opacity: 1 },
-          { transform: `translate(${dx * 1.1}px, ${dy * 1.1}px) rotate(${rotate * 1.2}deg)`, opacity: 0 }
-        ], {
-          duration: 700,
-          delay: delay,
-          easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-          fill: 'forwards'
-        });
-
-        container.appendChild(particle);
-      }
-    }
-
-    setTimeout(() => {
-      container.innerHTML = '';
-      container.style.display = 'none';
-
-      profile.style.transition = 'none';
-      profile.style.opacity = '0';
-      profile.style.transform = 'translateY(-250vh) scale(1)';
-      profile.style.visibility = 'visible';
-
-      void profile.offsetWidth;
-
-      const anim = profile.animate([
-        { transform: 'translateY(-250vh)', opacity: 0 },
-        { transform: 'translateY(0)', opacity: 1, offset: 0.7 },
-        { transform: 'translateY(-25px)', offset: 0.85 },
-        { transform: 'translateY(0)', offset: 0.95 },
-        { transform: 'translateY(-10px)', offset: 0.98 },
-        { transform: 'translateY(0)', opacity: 1, offset: 1 }
-      ], {
-        duration: 1200,
-        easing: 'ease-out',
-        fill: 'forwards'
-      });
-
-      anim.onfinish = () => {
-        profile.style.opacity = '1';
-        profile.style.transform = 'translateY(0)';
-        profile.style.visibility = 'visible';
-      };
-    }, 800);
-  }, 400);
+      setTimeout(() => {
+        container.innerHTML     = '';
+        container.style.display = 'none';
+        dropAndBounce(profile);
+      }, 650);
+    };
+  };
 }
 
-// Fun Mode Activation Callback
-function onFunModeActivated() {
+window.onFunModeActivated = function () {
   explodeAndReassembleProfile();
-}
+};
 
-// Initialize on page load
 window.addEventListener('DOMContentLoaded', () => {
-  const isFun = document.body.classList.contains('fun-mode');
-  
-  if (isFun) {
-    setTimeout(() => {
-      explodeAndReassembleProfile();
-    }, 100);
+  if (document.body.classList.contains('fun-mode')) {
+    setTimeout(explodeAndReassembleProfile, 120);
   }
 });

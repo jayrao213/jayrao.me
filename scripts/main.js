@@ -42,7 +42,7 @@ if (isFunMode) {
   toggleBtn.classList.remove('show');
   setTimeout(() => {
     toggleBtn.classList.add('show');
-  }, 4000);
+  }, 2700);
 } else {
   toggleBtn.classList.add('show');
 }
@@ -64,7 +64,7 @@ toggleBtn.addEventListener("click", () => {
     toggleBtn.classList.remove('show');
     setTimeout(() => {
       toggleBtn.classList.add('show');
-    }, 4000);
+    }, 2700);
   } else {
     toggleBtn.classList.add('show');
   }

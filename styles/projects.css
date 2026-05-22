@@ -17,20 +17,19 @@
   gap: 3rem;
   align-items: flex-start;
   background-color: #1c1c1c;
-  border: 0.0625rem solid #333;
+  border: 1px solid #2a2a2a;
   border-radius: 0.75rem;
   padding: 2rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(255, 255, 255, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
-  /* Ensure the card fills the grid cell height on desktop */
-  height: 100%; 
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s ease;
+  height: 100%;
   box-sizing: border-box;
 }
 
 .project-row:hover {
-  transform: translateY(-0.3rem);
-  box-shadow: 0 0.5rem 1rem rgba(255, 255, 255, 0.1);
+  transform: translateY(-0.25rem);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), 0 12px 32px rgba(0, 0, 0, 0.4);
+  border-color: #3a3a3a;
 }
 
 /* Project Image */
@@ -39,13 +38,15 @@
   max-width: 45%;
 }
 
-.project-image img {
+.project-image img,
+.project-image video {
   width: 100%;
   height: auto;
   border-radius: 0.5rem;
   border: 1px solid #333;
   object-fit: cover;
   aspect-ratio: 16 / 9;
+  display: block;
 }
 
 /* Project Details */

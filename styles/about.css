@@ -35,12 +35,9 @@
 
 .particle {
   position: absolute;
-  width: 10%;
-  height: 10%;
-  background-image: url('../images/jayrao.jpeg');
-  background-size: 1000% 1000%;
-  border-radius: 50%;
-  will-change: transform, opacity;
+  background-image: url('../images/jayrao.webp');
+  background-repeat: no-repeat;
+  will-change: transform, opacity, clip-path;
 }
 
 /* Education Card */
