@@ -13,13 +13,17 @@ const DEFAULT_PHOTOS = [
   { id: 'p3', src: '../images/nyc.jpeg', alt: 'Steinway Tower at sunset in NYC' },
   { id: 'p4', src: '../images/plane_sunset.jpeg', alt: 'Clouds over Lake Michigan from 30,000ft above' },
   { id: 'p5', src: '../images/squirrel.jpeg', alt: 'Curious squirrel sitting on a tree' },
-  { id: 'p6', src: '../images/deering.jpeg', alt: 'Deering Library at night' },
+  { id: 'p16', src: '../images/deering_day.jpeg', alt: 'Deering Library on a bright day' },
   { id: 'p7', src: '../images/spac.jpeg', alt: 'Moonlight beaming through the clouds on SPAC' },
+  { id: 'p13', src: '../images/lightning.jpeg', alt: 'Lightning over two ducks at night' },
   { id: 'p8', src: '../images/flowers.jpg', alt: 'Bright colored flowers in the spring' },
   { id: 'p9', src: '../images/bienen.jpeg', alt: 'Ryan Center at night' },
+  { id: 'p14', src: '../images/music_admin_building.jpeg', alt: 'Music Administration Building on campus' },
+  { id: 'p15', src: '../images/lake_michigan_sunrise.jpeg', alt: 'Sunrise over Lake Michigan' },
   { id: 'p10', src: '../images/atrium.jpg', alt: 'Atrium of Northwestern University\'s Technological Institute' },
   { id: 'p11', src: '../images/norris.jpeg', alt: 'Norris University Center sitting next to the iced out lakefill' },
-  { id: 'p12', src: '../images/arches.jpeg', alt: 'Spooky arches on campus at midnight' }
+  { id: 'p12', src: '../images/arches.jpeg', alt: 'Spooky arches on campus at midnight' },
+  { id: 'p6', src: '../images/deering.jpeg', alt: 'Deering Library at night' }
 ];
 
 let currentOrderIds = [];
