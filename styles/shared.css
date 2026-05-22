@@ -54,9 +54,6 @@ header {
   transition: scale 0.2s ease;
 }
 
-.left-icons img:hover {
-  scale: 1.2;
-}
 
 .left-icons a img {
   animation: slideInLeftBounce 0.8s ease forwards;
@@ -101,10 +98,6 @@ header {
   opacity: 0;
 }
 
-.emoji-toggle:hover {
-  scale: 1.2;
-}
-
 body:not(.fun-mode) .emoji-toggle {
   animation: none !important;
   opacity: 1 !important;
@@ -141,19 +134,18 @@ body:not(.fun-mode) .emoji-toggle {
   transition: scale 0.2s ease !important;
 }
 
-body:not(.fun-mode) .left-icons img:hover,
-body:not(.fun-mode) .emoji-toggle:hover {
-  scale: 1.2;
-}
-
 body:not(.fun-mode) .home-button,
 body.fun-mode .home-button {
   transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-body.fun-mode .left-icons img:hover,
-body.fun-mode .emoji-toggle:hover {
-  scale: 1.2;
+/* Only scale on hover for true pointer devices — touch browsers have sticky
+   :hover that persists after tap, so the scale would get stuck on mobile. */
+@media (hover: hover) {
+  .left-icons img:hover,
+  .emoji-toggle:hover {
+    scale: 1.2;
+  }
 }
 
 /* ====================================== */
