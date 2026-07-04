@@ -475,11 +475,13 @@ body.fun-mode .btn2 {
 }
 
 body.fun-mode .btn3 {
+  background-color: #000000;
   animation: bounceInBottom 0.55s ease 2.35s forwards;
   opacity: 0;
 }
 
 body.fun-mode .btn4 {
+  background-color: #000000;
   animation: bounceInBottom 0.55s ease 2.35s forwards;
   opacity: 0;
 }
